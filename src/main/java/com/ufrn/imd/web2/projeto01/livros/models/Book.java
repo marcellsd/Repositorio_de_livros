@@ -2,13 +2,28 @@ package com.ufrn.imd.web2.projeto01.livros.models;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "books")
 public class Book {
     private String title;
     private Integer numberOfPages;
     private Integer edition;
     private Date publicationDate;
     private String isbn;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    public Book(){
+        
+    }
 
     public Book(String title, Integer numberOfPages, Integer edition, Date publicationDate, String isbn) {
         this.title = title;

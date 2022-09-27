@@ -2,6 +2,14 @@ package com.ufrn.imd.web2.projeto01.livros.models;
 
 import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "publishers")
 public class Publisher {
     private String name;
     private String hqLocation;
@@ -9,7 +17,14 @@ public class Publisher {
 
     private List<Book> books;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    public Publisher() {
+        
+    }
+
     public Publisher(String name, String hqLocation, String webSite) {
         this.name = name;
         this.hqLocation = hqLocation;
