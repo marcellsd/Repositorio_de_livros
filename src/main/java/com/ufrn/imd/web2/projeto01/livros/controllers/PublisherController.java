@@ -45,7 +45,7 @@ public class PublisherController {
     public String deletePublisher(@PathVariable String publisherId, Model model){
         Integer id = Integer.parseInt(publisherId);
         Publisher publisher =  publisherService.getPublisherById(id);
-        publisherService.deletarPublisher(publisher);
+        publisherService.deletePublisherById(id);
         model.addAttribute("publisher", publisher);
         return "publisher/deletePublisherPage";
     }

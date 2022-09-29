@@ -44,7 +44,7 @@ public class AuthorController {
     public String deleteAuthor(@PathVariable String authorId, Model model){
         Integer id = Integer.parseInt(authorId);
         Author author =  authorService.getAuthorById(id);
-        authorService.deletarAuthor(author);
+        authorService.deleteAuthorById(id);
         model.addAttribute("author",author);
         return "author/deleteAuthorPage";
     }

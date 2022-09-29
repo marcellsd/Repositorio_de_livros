@@ -45,7 +45,7 @@ public class BookController {
     public String deleteBook(@PathVariable String bookId, Model model){
         Integer id = Integer.parseInt(bookId);
         Book book =  bookService.getBookById(id);
-        bookService.deletarBook(book);
+        bookService.deleteBookById(id);
         model.addAttribute("book", book);
         return "book/deleteBookPage";
     }
