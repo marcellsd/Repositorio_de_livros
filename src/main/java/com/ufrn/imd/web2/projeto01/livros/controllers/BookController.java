@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
+import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 
 
 @Controller

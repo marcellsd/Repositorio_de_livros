@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
+import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
 @Controller
