@@ -1,21 +1,48 @@
 package com.ufrn.imd.web2.projeto01.livros.models;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "books")
 public class Book {
+    @Column(length = 100)
     private String title;
+
+    @Column(length = 5)
     private Integer numberOfPages;
+
+    @Column(length = 3)
     private Integer edition;
+
+    @Column()
     private Date publicationDate;
+
+    @Column(length = 100)
     private String isbn;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="author_book",
+    joinColumns = @JoinColumn(name="book_id"),
+    inverseJoinColumns = @JoinColumn(name="author_id"))
+    private List<Author> authors;
+
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private Publisher publisher;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
