@@ -25,7 +25,7 @@ public class AuthorController {
     public String showListaCursos(Model model){
         List<Author> authors = authorService.getAuthorsList();
         model.addAttribute("authors",authors);
-        return "author/AuthorList";
+        return "author/authorList";
     }
 
     @RequestMapping("/showFormAuthor")
