@@ -2,16 +2,18 @@ package com.ufrn.imd.web2.projeto01.livros.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.CollectionId;
 
 @Entity
 @Table(name = "publishers")
@@ -20,11 +22,11 @@ public class Publisher {
     @Column(length = 50)
     private String name;
 
-    @Column(length = 150)
-    private String hqLocation;
-
-    @Column(length = 150)
-    private String webSite;
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name = "publisher_address",
+    joinColumns = @JoinColumn(name="publisher_id"),
+    inverseJoinColumns = @JoinColumn(name="address_id"))
+    private Address address;
 
     @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     private List<Book> books;
@@ -37,29 +39,26 @@ public class Publisher {
         
     }
 
-    public Publisher(String name, String hqLocation, String webSite) {
+    public Publisher(String name, Address address) {
         this.name = name;
-        this.hqLocation = hqLocation;
-        this.webSite = webSite;
+        this.address = address;
     }
+    
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public String getHqLocation() {
-        return hqLocation;
-    }
-    public void setHqLocation(String hqLocation) {
-        this.hqLocation = hqLocation;
-    }
-    public String getWebSite() {
-        return webSite;
-    }
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
-    }
+
     public Integer getId() {
         return id;
     }
@@ -76,8 +75,8 @@ public class Publisher {
 
     @Override
     public String toString() {
-        return "Publisher [ name=" + name + ", hqLocation=" + hqLocation + ", id=" + id 
-                + ", webSite=" + webSite + "]";
+        return "Publisher [ name=" + name + ", hqLocation=" + this.address.getHqAddress() + ", id=" + id 
+                + ", webSite=" + this.address.getWebSiteAddress() + "]";
     }
     
 }
