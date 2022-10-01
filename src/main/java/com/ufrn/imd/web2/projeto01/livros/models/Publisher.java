@@ -2,6 +2,7 @@ package com.ufrn.imd.web2.projeto01.livros.models;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,8 +21,6 @@ public class Publisher {
     @Column(length = 50)
     private String name;
 
-    
-
     @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     private List<Book> books;
 
@@ -37,8 +36,10 @@ public class Publisher {
         
     }
 
+
     public Publisher(String name) {
         this.name = name;
+
     }
 
     public String getName() {
@@ -47,7 +48,7 @@ public class Publisher {
     public void setName(String name) {
         this.name = name;
     }
-   
+
     public Integer getId() {
         return id;
     }
@@ -61,7 +62,5 @@ public class Publisher {
     public void setBooks(List<Book> books) {
         this.books = books;
     }
-
-  
     
 }
