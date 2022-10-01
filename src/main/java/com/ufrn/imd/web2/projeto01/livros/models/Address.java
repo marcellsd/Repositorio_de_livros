@@ -3,27 +3,21 @@ package com.ufrn.imd.web2.projeto01.livros.models;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.OneToOne;
-import javax.persistence.JoinTable;
 import javax.persistence.Column;
-import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
-import javax.persistence.CascadeType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Table(name="adress")
+@Table(name="address")
 public class Address {
     @Column(length = 50)
     private String webSiteAddress;
     @Column(length = 50)
     private String hqAddress;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
-    @JoinTable(name = "publisher_address",
-    joinColumns = @JoinColumn(name="address_id"),
-    inverseJoinColumns = @JoinColumn(name="publisher_id"))
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "address")
     private Publisher publisher;
     
     @Id
