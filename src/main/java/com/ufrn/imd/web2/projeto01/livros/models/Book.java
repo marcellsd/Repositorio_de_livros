@@ -42,7 +42,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
-    private Publisher publisher;
+    public Publisher publisher;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
