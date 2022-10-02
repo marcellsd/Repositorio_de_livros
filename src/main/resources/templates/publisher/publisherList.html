@@ -1,20 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
     <title>Lista de Editoras</title>
-</head>
-<body>
-    <h1>Lista de Editoras</h1>
-    <ul class = "list-group">
-        <li class="list-group-item d-flex justify-content-between"  
-        th:each="publisher: ${publishers}">
-            <span th:text="'Nome: ' + ${publisher.name} + ' - Endereço: ' + ${publisher.address.hqAddress} + ' - Site: ' +${publisher.address.webSiteAddress} "/>
-            <a th:href = "'publisher/deletePublisher/'+${publisher.id}">Excluir</a>
-        </li>
-    </ul>
-</body>
+  </head>
+  <body>
+    <div class="container vh-100">
+      <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6">
+          <h1>Lista de Editoras</h1>
+          <ul class="list-group">
+            <li
+              class="list-group-item d-flex justify-content-between"
+              th:each="publisher: ${publishers}"
+            >
+              <span
+                th:text="'Nome: ' + ${publisher.name} + ' - Endereço: ' + ${publisher.address.hqAddress} + ' - Site: ' +${publisher.address.webSiteAddress} "
+              />
+              <td><a th:href="@{/publisher/deletePublisher(id=${publisher.id})}">Excluir</a></td>
+              <!-- <a th:href="'publisher/deletePublisher/'+${publisher.id}">Excluir</a -->
+              >
+            </li>
+          </ul>
+          <a href="/">Home</a>
+        </div>
+        <div class="col-lg-3"></div>
+      </div>
+    </div>
+  </body>
 </html>

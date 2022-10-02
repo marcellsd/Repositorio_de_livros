@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
@@ -42,13 +44,19 @@ public class PublisherController {
         return "Publisher/addPublisherPage";
     }
     
-    @RequestMapping("/deletePublisher/{publisherId}")
-    public String deletePublisher(@PathVariable String publisherId, Model model){
-        Integer id = Integer.parseInt(publisherId);
-        Publisher publisher =  publisherService.getPublisherById(id);
+    // @RequestMapping("/deletePublisher/{publisherId}")
+    // public String deletePublisher(@PathVariable String publisherId, Model model){
+    //     Integer id = Integer.parseInt(publisherId);
+    //     Publisher publisher =  publisherService.getPublisherById(id);
+    //     publisherService.deletePublisherById(id);
+    //     model.addAttribute("publisher", publisher);
+    //     return "publisher/deletePublisherPage";
+    // }
+
+    @GetMapping("deletePublisher")
+    public String deletePublisher(@RequestParam(name = "id") Integer id) {
         publisherService.deletePublisherById(id);
-        model.addAttribute("publisher", publisher);
-        return "publisher/deletePublisherPage";
+        return "redirect:getPublishersList";
     }
 
     @RequestMapping("/getPublisher/{publisherId}")
