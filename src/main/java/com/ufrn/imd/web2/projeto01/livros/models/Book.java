@@ -15,6 +15,13 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 @Entity
 @Table(name = "books")
@@ -28,7 +35,11 @@ public class Book {
     @Column(length = 3)
     private Integer edition;
 
-    @Column()
+    
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "UTC")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "publication_date")
     private Date publicationDate;
 
     @Column(length = 100)
@@ -42,7 +53,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
-    public Publisher publisher;
+    private Publisher publisher;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,11 +106,29 @@ public class Book {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    
+    
+    public List<Author> getAuthors() {
+        return authors;
+    }
+    
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
+    }
+    
+    public Publisher getPublisher() {
+        return publisher;
+    }
+    
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+    
     @Override
     public String toString() {
         return "Book [title=" + title + ", edition=" + edition + ", id=" + id + ", isbn=" + isbn + ", numberOfPages=" + numberOfPages
                 + ", publicationDate=" + publicationDate + "]";
     }
-    
     
 }

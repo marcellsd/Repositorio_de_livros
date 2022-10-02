@@ -1,5 +1,6 @@
 package com.ufrn.imd.web2.projeto01.livros.controllers;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
+import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
 @Controller
@@ -23,6 +25,11 @@ public class BookController {
     @Autowired
     @Qualifier("bookServiceImpl")
     BookService bookService;
+    
+    @Autowired
+    @Qualifier("publisherServiceImpl")
+    PublisherService publisherService;
+
     Integer currentBookId = null;
 
     @RequestMapping("/getBooksList")
@@ -34,6 +41,7 @@ public class BookController {
 
     @RequestMapping("/showFormBook")
     public String showFormCurso(Model model){
+        model.addAttribute("publishers", publisherService.getPublishersList());
         model.addAttribute("book", new Book());
         return "book/formBook";
     }
@@ -42,7 +50,7 @@ public class BookController {
     public String addBook(@ModelAttribute("book") Book book, Model model){
         Book newBook = bookService.saveBook(book);
         model.addAttribute("book", newBook);
-        return "book/addBookPage";
+        return "redirect:getBooksList";
     }
     
     // @RequestMapping("/deleteBook/{bookId}")
