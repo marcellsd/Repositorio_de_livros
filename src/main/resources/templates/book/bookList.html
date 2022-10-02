@@ -8,14 +8,24 @@
     <title>Lista de Livros</title>
 </head>
 <body>
-    <h1>Lista de Livros</h1>
-    <ul class = "list-group">
-        <li class="list-group-item d-flex justify-content-between" 
-        th:each="book: ${books}">
-            <span th:text="'Título: ' + ${book.title} + ' - Editora: ' + ${book.publisher.name} + 
-            ' - Edição: ' + ${book.edition} + ' - Número de páginas: ' + ${book.numberOfPages}"/>
-                <a th:href = "'book/deleteBook/'+${book.id}">Excluir</a>
-        </li>
-    </ul>
+    <div class="container vh-100">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <h1>Lista de Livros</h1>
+                    <ul class = "list-group">
+                        <li class="list-group-item d-flex justify-content-between" 
+                            th:each="book: ${books}">
+                            <span th:text="'Título: ' + ${book.title} + ' - Editora: ' + ${book.publisher.name} + 
+                                ' - Edição: ' + ${book.edition} + ' - Número de páginas: ' + ${book.numberOfPages}"/>
+                            <td><a th:href="@{/book/deleteBook(id=${book.id})}">Excluir</a></td>
+                            <!-- <a th:href = "'book/deleteBook/'+${book.id}">Excluir</a> -->
+                        </li>
+                    </ul><br>
+                <a href="/">Home</a>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
 </body>
 </html>

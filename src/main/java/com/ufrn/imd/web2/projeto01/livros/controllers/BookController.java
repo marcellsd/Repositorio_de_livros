@@ -6,9 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 
@@ -42,13 +45,19 @@ public class BookController {
         return "book/addBookPage";
     }
     
-    @RequestMapping("/deleteBook/{bookId}")
-    public String deleteBook(@PathVariable String bookId, Model model){
-        Integer id = Integer.parseInt(bookId);
-        Book book =  bookService.getBookById(id);
+    // @RequestMapping("/deleteBook/{bookId}")
+    // public String deleteBook(@PathVariable String bookId, Model model){
+    //     Integer id = Integer.parseInt(bookId);
+    //     Book book =  bookService.getBookById(id);
+    //     bookService.deleteBookById(id);
+    //     model.addAttribute("book", book);
+    //     return "book/deleteBookPage";
+    // }
+
+    @GetMapping("deleteBook")
+    public String deleteBook(@RequestParam(name = "id") Integer id) {
         bookService.deleteBookById(id);
-        model.addAttribute("book", book);
-        return "book/deleteBookPage";
+        return "redirect:getBooksList";
     }
 
     @RequestMapping("/getBook/{bookId}")

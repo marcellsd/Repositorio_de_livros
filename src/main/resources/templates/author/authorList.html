@@ -8,13 +8,25 @@
     <title>Autores</title>
 </head>
 <body>
-    <h1>Lista de Autores</h1>
-    <ul class = "list-group">
-        <li class="list-group-item d-flex justify-content-between" 
-        th:each="author: ${authors}">
-            <span th:text="'Nome: ' + ${author.name}"/>
-                <a th:href = "'author/deleteAuthor/'+${author.id}">Excluir</a>
-        </li>
-    </ul>
+    <div class="container vh-100">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <h1>Lista de Autores</h1>
+                <ul class = "list-group">
+                    <li class="list-group-item d-flex justify-content-between" 
+                    th:each="author: ${authors}">
+                        <span th:text="'Nome: ' + ${author.name}"/>
+                        <td><a th:href="@{/author/deleteAuthor(id=${author.id})}">Excluir</a></td>
+                            <!-- <a th:href = "'author/deleteAuthor/'+${author.id}">Excluir</a> -->
+                    </li>
+                </ul><br>
+                <a href="showFormAuthor">Fomulário do autor</a><br>
+                <a href="/">Home</a>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+    
 </body>
 </html>

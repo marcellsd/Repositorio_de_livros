@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
@@ -38,16 +40,22 @@ public class AuthorController {
     public String addAuthor(@ModelAttribute("author") Author author, Model model){
         Author newAuthor = authorService.saveAuthor(author);
         model.addAttribute("author", newAuthor);
-        return "author/addAuthorPage";
+        return "redirect:getAuthorsList";
     }
     
-    @RequestMapping("/deleteAuthor/{authorId}")
-    public String deleteAuthor(@PathVariable String authorId, Model model){
-        Integer id = Integer.parseInt(authorId);
-        Author author =  authorService.getAuthorById(id);
+    // @RequestMapping("/deleteAuthor/{authorId}")
+    // public String deleteAuthor(@PathVariable String authorId, Model model){
+    //     Integer id = Integer.parseInt(authorId);
+    //     Author author =  authorService.getAuthorById(id);
+    //     authorService.deleteAuthorById(id);
+    //     model.addAttribute("author",author);
+    //     return "author/deleteAuthorPage";
+    // }
+    
+    @GetMapping("/deleteAuthor")
+    public String deleteAuthor(@RequestParam(name = "id") Integer id, Model model){
         authorService.deleteAuthorById(id);
-        model.addAttribute("author",author);
-        return "author/deleteAuthorPage";
+        return "redirect:getAuthorsList";
     }
 
     @RequestMapping("/getAuthor/{authorId}")
