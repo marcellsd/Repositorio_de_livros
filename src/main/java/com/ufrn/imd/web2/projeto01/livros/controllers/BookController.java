@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
+import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
@@ -30,6 +31,10 @@ public class BookController {
     @Qualifier("publisherServiceImpl")
     PublisherService publisherService;
 
+    @Autowired
+    @Qualifier("authorServiceImpl")
+    AuthorService authorService;
+
     Integer currentBookId = null;
 
     @RequestMapping("/getBooksList")
@@ -43,6 +48,7 @@ public class BookController {
     public String showFormCurso(Model model){
         model.addAttribute("publishers", publisherService.getPublishersList());
         model.addAttribute("book", new Book());
+        model.addAttribute("authors", authorService.getAuthorsList());
         return "book/formBook";
     }
 
