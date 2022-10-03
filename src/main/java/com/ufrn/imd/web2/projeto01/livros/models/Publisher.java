@@ -67,6 +67,16 @@ public class Publisher {
     public String toString() {
         return "Publisher [name=" + name + ", address=" + address + ", id=" + id + "]";
     }
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
     
     
 }

@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
+import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
+import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
@@ -24,6 +27,10 @@ public class PublisherController {
     PublisherService publisherService;
     Integer currentPublisherId = null;
 
+    @Autowired
+    @Qualifier("addressServiceImpl")
+    AddressService addressService;
+
     @RequestMapping("/getPublishersList")
     public String showListaCursos(Model model){
         List<Publisher> publishers = publisherService.getPublishersList();
@@ -33,15 +40,19 @@ public class PublisherController {
 
     @RequestMapping("/showFormPublisher")
     public String showFormCurso(Model model){
+        model.addAttribute("address", new Address());
         model.addAttribute("publisher", new Publisher());
         return "publisher/formPublisher";
     }
 
     @RequestMapping("/addPublisher")
-    public String addPublisher(@ModelAttribute("Publisher") Publisher publisher, Model model){
+    public String addPublisher(@ModelAttribute("publisher") Publisher publisher, 
+                                @ModelAttribute("address") Address address, Model model){
+        //Address newAddress = addressService.saveAddress(address);
+        publisher.setAddress(addressService.saveAddress(address));
         Publisher newPublisher = publisherService.savePublisher(publisher);
-        model.addAttribute("Publisher", newPublisher);
-        return "Publisher/addPublisherPage";
+        model.addAttribute("publisher", newPublisher);
+        return "redirect:getPublishersList";
     }
     
     // @RequestMapping("/deletePublisher/{publisherId}")
