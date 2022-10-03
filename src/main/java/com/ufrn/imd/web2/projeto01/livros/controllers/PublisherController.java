@@ -70,8 +70,8 @@ public class PublisherController {
         return "redirect:getPublishersList";
     }
 
-    @RequestMapping("/getPublisher/{publisherId}")
-    public String getPublisherById(@PathVariable String publisherId, Model model){
+    @RequestMapping("/getPublisherByID/{publisherId}")
+    public String getPublisherByID(@PathVariable String publisherId, Model model){
         Integer id = Integer.parseInt(publisherId);
         Publisher publisher =  publisherService.getPublisherById(id);
         model.addAttribute("publisher", publisher);
