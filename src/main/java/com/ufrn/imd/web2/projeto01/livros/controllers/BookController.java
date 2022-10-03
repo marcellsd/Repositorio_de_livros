@@ -1,6 +1,6 @@
 package com.ufrn.imd.web2.projeto01.livros.controllers;
 
-import java.sql.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,21 +83,21 @@ public class BookController {
     }
     
     @RequestMapping("/showFormBookUpdate/{bookId}")
-    public String showFormBookUpdate(@PathVariable String BookId, @ModelAttribute("book") Book book, Model model){
-        Integer id = Integer.parseInt(BookId);
+    public String showFormBookUpdate(@PathVariable String bookId, @ModelAttribute("book") Book book, Model model){
+        Integer id = Integer.parseInt(bookId);
         this.currentBookId = id;
         book =  bookService.getBookById(id);
         model.addAttribute("book", book);
-        System.out.println(book);
+        model.addAttribute("publishers", publisherService.getPublishersList());
+        model.addAttribute("authors", authorService.getAuthorsList());
         return "book/formUpdateBook";
     }
 
     @RequestMapping("/updateBook")
     public String updateBook(@ModelAttribute("Book") Book newBook, Model model){
         Book book = bookService.updateById(currentBookId,newBook);
-        System.out.println(book);
         model.addAttribute("BookAtualizado", book);
         this.currentBookId = null;
-        return "book/updateBookPage";
+        return "redirect:getBooksList";
     }
 }

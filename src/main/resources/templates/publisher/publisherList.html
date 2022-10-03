@@ -26,9 +26,8 @@
               <span
                 th:text="'Nome: ' + ${publisher.name} + ' - Endereço: ' + ${publisher.address.hqAddress} + ' - Site: ' +${publisher.address.webSiteAddress} "
               />
-              <td><a th:href="@{/publisher/deletePublisher(id=${publisher.id})}">Excluir</a></td>
-              <!-- <a th:href="'publisher/deletePublisher/'+${publisher.id}">Excluir</a -->
-              >
+              <td> <a th:href = "'showFormPublisherUpdate/'+${publisher.id}">Editar </a>
+                <a th:href="@{/publisher/deletePublisher(id=${publisher.id})}"> Excluir</a></td>
             </li>
           </ul><br>
           <a href = "showFormPublisher">Formulário Editora</a><br>
