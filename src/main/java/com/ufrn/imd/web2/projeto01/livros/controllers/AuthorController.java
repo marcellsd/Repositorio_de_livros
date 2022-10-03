@@ -36,6 +36,13 @@ public class AuthorController {
         return "author/formAuthor";
     }
 
+    // @GetMapping("/getAuthorById/{id}")
+    // public String showAuthorDetails(@PathVariable(name = "id") Integer id, Model model) {
+    //     Author author = authorService.getAuthorById(id);
+    //     model.addAttribute("author", author);
+    //     return "author/authorPage";
+    // }
+
     @RequestMapping("/addAuthor")
     public String addAuthor(@ModelAttribute("author") Author author, Model model){
         Author newAuthor = authorService.saveAuthor(author);
@@ -58,8 +65,8 @@ public class AuthorController {
         return "redirect:getAuthorsList";
     }
 
-    @RequestMapping("/getAuthor/{authorId}")
-    public String getAuthorById(@PathVariable String authorId, Model model){
+    @RequestMapping("/getAuthorByID/{authorId}")
+    public String getAuthorByID(@PathVariable String authorId, Model model){
         Integer id = Integer.parseInt(authorId);
         Author author =  authorService.getAuthorById(id);
         model.addAttribute("author", author);
