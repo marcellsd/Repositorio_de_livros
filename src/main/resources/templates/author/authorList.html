@@ -17,12 +17,20 @@
                     <li class="list-group-item d-flex justify-content-between" 
                     th:each="author: ${authors}">
                         <span th:text="'Nome: ' + ${author.name}"/>
+
                         <td> <a th:href = "'showFormAuthorUpdate/'+${author.id}">Editar </a>
                         <a th:href="@{/author/deleteAuthor(id=${author.id})}">Excluir</a></td> 
+
+                        <div id="options">
+                            <a th:href="@{/author/getAuthorByID/{id}(id=${author.id})}" style="text-decoration: none;">Detalhar&nbsp&nbsp</a>
+                            <a th:href="@{/author/deleteAuthor(id=${author.id})}" style="text-decoration: none;">Excluir</a>
+                        </div>
+                            <!-- <a th:href = "'author/deleteAuthor/'+${author.id}">Excluir</a> -->
+
                     </li>
                 </ul><br>
-                <a href="showFormAuthor">Fomulário do autor</a><br>
-                <a href="/">Home</a>
+                <a href="showFormAuthor" style="text-decoration: none;">Fomulário do autor</a><br>
+                <a href="/" style="text-decoration: none;">Home</a>
             </div>
             <div class="col-lg-3"></div>
         </div>

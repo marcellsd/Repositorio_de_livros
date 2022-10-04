@@ -18,12 +18,20 @@
                             th:each="book: ${books}">
                             <span th:text="'Título: ' + ${book.title} + ' - Editora: ' + ${book.publisher.name} + 
                                 ' - Edição: ' + ${book.edition} + ' - Número de páginas: ' + ${book.numberOfPages}"/>
+
                             <td> <a th:href = "'showFormBookUpdate/'+${book.id}">Editar </a>
                                 <a th:href="@{/book/deleteBook(id=${book.id})}">Excluir</a></td>
+
+                            
+                                <a th:href="@{/book/getBookByID/{id}(id=${book.id})}" style="text-decoration: none;">Detalhar&nbsp&nbsp</a>
+                                <a th:href="@{/book/deleteBook(id=${book.id})}" style="text-decoration: none;">Excluir</a>
+                           
+                            <!-- <a th:href = "'book/deleteBook/'+${book.id}">Excluir</a> -->
+
                         </li>
                     </ul><br>
-                <a href="showFormBook">Formulário de livro</a><br>
-                <a href="/">Home</a>
+                <a href="showFormBook" style="text-decoration: none;">Formulário de livro</a><br>
+                <a href="/" style="text-decoration: none;">Home</a>
             </div>
             <div class="col-lg-3"></div>
         </div>

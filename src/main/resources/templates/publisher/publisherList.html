@@ -24,14 +24,21 @@
               th:each="publisher: ${publishers}"
             >
               <span
-                th:text="'Nome: ' + ${publisher.name} + ' - Endereço: ' + ${publisher.address.hqAddress} + ' - Site: ' +${publisher.address.webSiteAddress} "
+                th:text="'Nome: ' + ${publisher.name} + ' - Endereço: ' + ${publisher.address.hqAddress} + ' - Site: ' +${publisher.address.webSiteAddress}"
               />
+
               <td> <a th:href = "'showFormPublisherUpdate/'+${publisher.id}">Editar </a>
                 <a th:href="@{/publisher/deletePublisher(id=${publisher.id})}"> Excluir</a></td>
+
+              <a th:href="@{/publisher/getPublisherByID/{id}(id=${publisher.id})}" style="text-decoration: none;">Detalhar&nbsp&nbsp</a>
+              <a th:href="@{/publisher/deletePublisher(id=${publisher.id})}" style="text-decoration: none;">Excluir</a>
+              <!-- <a th:href="'publisher/deletePublisher/'+${publisher.id}">Excluir</a -->
+              
+
             </li>
           </ul><br>
-          <a href = "showFormPublisher">Formulário Editora</a><br>
-          <a href="/">Home</a>
+          <a href = "showFormPublisher" style="text-decoration: none;">Formulário Editora</a><br>
+          <a href="/" style="text-decoration: none;">Home</a>
         </div>
         <div class="col-lg-3"></div>
       </div>

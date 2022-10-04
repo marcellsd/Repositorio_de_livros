@@ -1,6 +1,5 @@
 package com.ufrn.imd.web2.projeto01.livros.controllers;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +73,8 @@ public class BookController {
         return "redirect:getBooksList";
     }
 
-    @RequestMapping("/getBook/{bookId}")
-    public String getBookById(@PathVariable String bookId, Model model){
+    @RequestMapping("/getBookByID/{bookId}")
+    public String getBookByID(@PathVariable String bookId, Model model){
         Integer id = Integer.parseInt(bookId);
         Book book =  bookService.getBookById(id);
         model.addAttribute("book", book);
