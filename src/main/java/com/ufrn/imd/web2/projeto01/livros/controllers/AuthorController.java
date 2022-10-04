@@ -89,6 +89,6 @@ public class AuthorController {
         System.out.println(author);
         model.addAttribute("AuthorAtualizado", author);
         this.currentAuthorId = null;
-        return "author/updateAuthorPage";
+        return "redirect:getAuthorsList";
     }
 }

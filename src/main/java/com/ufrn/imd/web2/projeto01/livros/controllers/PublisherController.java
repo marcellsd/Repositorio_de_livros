@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
 import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
-import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
@@ -26,6 +25,7 @@ public class PublisherController {
     @Qualifier("publisherServiceImpl")
     PublisherService publisherService;
     Integer currentPublisherId = null;
+    Integer currentAddressId = null;
 
     @Autowired
     @Qualifier("addressServiceImpl")
@@ -83,17 +83,21 @@ public class PublisherController {
         Integer id = Integer.parseInt(publisherId);
         this.currentPublisherId = id;
         publisher =  publisherService.getPublisherById(id);
+        Address address = publisher.getAddress();
+        System.out.println(address);
+        this.currentAddressId = address.getId();
+        System.out.println(address.getId());
         model.addAttribute("publisher", publisher);
-        System.out.println(publisher);
+        model.addAttribute("address", address);
         return "publisher/formUpdatePublisher";
     }
 
     @RequestMapping("/updatePublisher")
-    public String updatePublisher(@ModelAttribute("publisher") Publisher newPublisher, Model model){
-        Publisher publisher = publisherService.updateById(currentPublisherId,newPublisher);
-        System.out.println(publisher);
-        model.addAttribute("publisherAtualizado", publisher);
-        this.currentPublisherId = null;
-        return "publisher/updatePublisherPage";
+    public String updatePublisher(@ModelAttribute("publisher") Publisher newPublisher,
+                                @ModelAttribute("address") Address newAddress, Model model){
+        Address address = addressService.updateById(currentAddressId,newAddress);
+        newPublisher.setAddress(address);
+        publisherService.updateById(currentPublisherId,newPublisher);
+        return "redirect:getPublishersList";
     }
 }
