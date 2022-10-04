@@ -1,6 +1,7 @@
 package com.ufrn.imd.web2.projeto01.livros.services.publisher;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,8 +39,11 @@ public class PublisherServiceImpl implements PublisherService{
 
 	@Override
 	public Publisher updateById(Integer currentPublisherId, Publisher newPublisher) {
-        newPublisher.setId(currentPublisherId);
-		return publishedRepository.save(newPublisher);
+       
+            newPublisher.setId(currentPublisherId);
+           
+            return publishedRepository.save(newPublisher);
+        
 	}
 
     

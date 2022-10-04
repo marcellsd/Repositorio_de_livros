@@ -1,6 +1,7 @@
 package com.ufrn.imd.web2.projeto01.livros.services.author;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,8 +40,16 @@ public class AuthorServiceImpl implements AuthorService {
 
 	@Override
 	public Author updateById(Integer currentAuthorId, Author newAuthor) {
-        newAuthor.setId(currentAuthorId);
-		return authorRepository.save(newAuthor);
+        Optional<Author> oldAuthor = authorRepository.findById(currentAuthorId);
+
+        if(oldAuthor.isPresent()) {
+           Author author =  oldAuthor.get();
+            newAuthor.setId(currentAuthorId);
+            newAuthor.setBooks(author.getBooks());
+            return authorRepository.save(newAuthor);
+        }else {
+            return null;
+        }
 	}
     
     

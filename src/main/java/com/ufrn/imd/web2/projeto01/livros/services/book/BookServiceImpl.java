@@ -1,6 +1,7 @@
 package com.ufrn.imd.web2.projeto01.livros.services.book;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,8 +40,8 @@ public class BookServiceImpl implements BookService{
 
 	@Override
 	public Book updateById(Integer currentBookId, Book newBook) {
-        newBook.setId(currentBookId);
-		return bookRepository.save(newBook);
+            newBook.setId(currentBookId);
+            return bookRepository.save(newBook);
 	}
 
     
