@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <title>Lista de Livros</title>
+</head>
+<body>
+    <div class="container vh-100">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
+                <h1>Lista de Livros</h1>
+                    <ul class = "list-group">
+                        <li class="list-group-item d-flex justify-content-between" 
+                            th:each="book: ${books}">
+                            <span th:text="'Título: ' + ${book.title} + ' - Editora: ' + ${book.publisher.name} + 
+                                ' - Edição: ' + ${book.edition} + ' - Número de páginas: ' + ${book.numberOfPages}"/>
+
+                                <a th:href = "'showFormBookUpdate/'+${book.id}" style="text-decoration: none;">&nbspEditar&nbsp&nbsp</a>
+                                <a th:href="@{/book/getBookByID/{id}(id=${book.id})}" style="text-decoration: none;">Detalhar&nbsp&nbsp</a>
+                                <a th:href="@{/book/deleteBook(id=${book.id})}" style="text-decoration: none;">Excluir</a>
+                           
+                            <!-- <a th:href = "'book/deleteBook/'+${book.id}">Excluir</a> -->
+
+                        </li>
+                    </ul><br>
+                <a href="showFormBook" style="text-decoration: none;">Formulário de livro</a><br>
+                <a href="/" style="text-decoration: none;">Home</a>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+</body>
+</html>
