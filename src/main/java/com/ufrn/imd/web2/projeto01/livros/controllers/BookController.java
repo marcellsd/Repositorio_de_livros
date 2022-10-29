@@ -4,13 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
@@ -18,7 +23,7 @@ import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
-@Controller
+@RestController
 @RequestMapping("/book")
 public class BookController {
     
@@ -34,69 +39,48 @@ public class BookController {
     @Qualifier("authorServiceImpl")
     AuthorService authorService;
 
-    Integer currentBookId = null;
 
-    @RequestMapping("/getBooksList")
-    public String showListaCursos(Model model){
-        List<Book> books = bookService.getBooksList();
-        model.addAttribute("books",books);
-        return "book/bookList";
+    @GetMapping
+    public List<Book> getBookList() {
+        return bookService.getBooksList();
     }
 
-    @RequestMapping("/showFormBook")
-    public String showFormCurso(Model model){
-        model.addAttribute("publishers", publisherService.getPublishersList());
-        model.addAttribute("book", new Book());
-        model.addAttribute("authors", authorService.getAuthorsList());
-        return "book/formBook";
+    @GetMapping("{id}")
+    public Book getBookById(@PathVariable Integer id) {
+        return bookService.getBookById(id);
     }
 
-    @RequestMapping("/addBook")
-    public String addBook(@ModelAttribute("book") Book book, Model model){
-        Book newBook = bookService.saveBook(book);
-        model.addAttribute("book", newBook);
-        return "redirect:getBooksList";
+    @PostMapping
+    public Book saveBook(@RequestBody Book book) {
+        return bookService.saveBook(book);
     }
-    
-    // @RequestMapping("/deleteBook/{bookId}")
-    // public String deleteBook(@PathVariable String bookId, Model model){
-    //     Integer id = Integer.parseInt(bookId);
-    //     Book book =  bookService.getBookById(id);
-    //     bookService.deleteBookById(id);
-    //     model.addAttribute("book", book);
-    //     return "book/deleteBookPage";
-    // }
 
-    @GetMapping("deleteBook")
-    public String deleteBook(@RequestParam(name = "id") Integer id) {
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBookById(@PathVariable Integer id) {
         bookService.deleteBookById(id);
-        return "redirect:getBooksList";
     }
 
-    @RequestMapping("/getBookByID/{bookId}")
-    public String getBookByID(@PathVariable String bookId, Model model){
-        Integer id = Integer.parseInt(bookId);
-        Book book =  bookService.getBookById(id);
-        model.addAttribute("book", book);
-        return "book/bookPage";
+    @PutMapping
+    public void updateBook(@PathVariable Integer id, @RequestBody Book updatedBook) {
+        Book oldBook = bookService.getBookById(id);
+        updatedBook.setId(oldBook.getId());
+        bookService.saveBook(updatedBook);
     }
     
-    @RequestMapping("/showFormBookUpdate/{bookId}")
-    public String showFormBookUpdate(@PathVariable String bookId, @ModelAttribute("book") Book book, Model model){
-        Integer id = Integer.parseInt(bookId);
-        this.currentBookId = id;
-        book =  bookService.getBookById(id);
-        model.addAttribute("book", book);
-        model.addAttribute("publishers", publisherService.getPublishersList());
-        model.addAttribute("authors", authorService.getAuthorsList());
-        return "book/formUpdateBook";
-    }
-
-    @RequestMapping("/updateBook")
-    public String updateBook(@ModelAttribute("Book") Book newBook, Model model){
-        Book book = bookService.updateById(currentBookId,newBook);
-        model.addAttribute("BookAtualizado", book);
-        this.currentBookId = null;
-        return "redirect:getBooksList";
+    @PatchMapping("{id}")
+    public void updateBookByPatch(@PathVariable Integer id, @RequestBody Book updatedBook) {
+        Book oldBook = bookService.getBookById(id);
+        updatedBook.setId(oldBook.getId());
+        if(updatedBook.getAuthors() == null) updatedBook.setAuthors(oldBook.getAuthors());
+        if(updatedBook.getEdition() == null) updatedBook.setEdition(oldBook.getEdition());
+        if(updatedBook.getIsbn() == null) updatedBook.setIsbn(oldBook.getIsbn());
+        if(updatedBook.getNumberOfPages() == null) updatedBook.setNumberOfPages(oldBook.getNumberOfPages());
+        if(updatedBook.getPublicationDate() == null) updatedBook.setPublicationDate(oldBook.getPublicationDate());
+        if(updatedBook.getPublisher() == null) updatedBook.setPublisher(oldBook.getPublisher());
+        if(updatedBook.getTitle() == null) updatedBook.setTitle(oldBook.getTitle());
+        bookService.saveBook(updatedBook);
     }
 }
+
+    
