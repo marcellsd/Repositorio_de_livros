@@ -23,7 +23,7 @@ import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/api/book")
 public class BookController {
     
     @Autowired
