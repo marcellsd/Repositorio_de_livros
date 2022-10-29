@@ -4,15 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
-@Controller
+
+@RestController
 @RequestMapping("/address")
 public class AddressController {
 
@@ -21,18 +23,12 @@ public class AddressController {
     AddressService addressService;
     Integer currentAddressId = null;
 
-    @RequestMapping("/getAddresssList")
-    public String showListaCursos(Model model){
-        List<Address> addresss = addressService.getAddresssList();
-        model.addAttribute("addresss",addresss);
-        return "address/addressList";
+    @GetMapping()
+    public List<Address> showListaCursos(){
+        List<Address> address = addressService.getAddresssList();
+        return address;
     }
 
-    @RequestMapping("/showFormAddress")
-    public String showFormCurso(Model model){
-        model.addAttribute("address", new Address());
-        return "address/formAddress";
-    }
 
     @RequestMapping("/addAddress")
     public String addAddress(@ModelAttribute("address") Address address, Model model){
