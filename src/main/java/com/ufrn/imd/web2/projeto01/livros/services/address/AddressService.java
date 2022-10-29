@@ -11,7 +11,7 @@ public interface AddressService {
     public Address saveAddress(Address address);
     public void deleteAddressById(Integer id);
     public Address getAddressById(Integer id);
-    public List<Address> getAddresssList();
+    public List<Address> getAddressList();
 	public Address updateById(Integer currentAddressId, Address newAddress);
 }
 

@@ -4,11 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.imd.web2.projeto01.livros.models.Address;
@@ -21,53 +28,46 @@ public class AddressController {
     @Autowired
     @Qualifier("addressServiceImpl")
     AddressService addressService;
-    Integer currentAddressId = null;
 
     @GetMapping()
-    public List<Address> showListaCursos(){
-        List<Address> address = addressService.getAddresssList();
-        return address;
-    }
+    public List<Address> showListaCursos() {
+        return addressService.getAddressList();
+    };
 
 
-    @RequestMapping("/addAddress")
-    public String addAddress(@ModelAttribute("address") Address address, Model model){
-        Address newAddress = addressService.saveAddress(address);
-        model.addAttribute("address", newAddress);
-        return "address/addAddressPage";
+    @PostMapping()
+    public Address saveAddress(@RequestBody Address address) {
+        return addressService.saveAddress(address);
     }
+
     
-    @RequestMapping("/deleteAddress/{addressId}")
-    public String deleteAddress(@PathVariable String addressId, Model model){
-        Integer id = Integer.parseInt(addressId);
-        Address address =  addressService.getAddressById(id);
+    @DeleteMapping("{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteAddressById(@PathVariable Integer id){
         addressService.deleteAddressById(id);
-        model.addAttribute("address",address);
-        return "address/deleteAddressPage";
     }
 
-    @RequestMapping("/getAddress/{addressId}")
-    public String getAddressById(@PathVariable String addressId, Model model){
-        Integer id = Integer.parseInt(addressId);
-        Address address =  addressService.getAddressById(id);
-        model.addAttribute("address", address);
-        return "address/addressPage";
+    @GetMapping("{id}")
+    public Address getAddressById(@PathVariable Integer id){
+        return addressService.getAddressById(id);
     }
     
-    @RequestMapping("/showFormAddressUpdate/{addressId}")
-    public String showFormAddressUpdate(@PathVariable String addressId, @ModelAttribute("address") Address address, Model model){
-        Integer id = Integer.parseInt(addressId);
-        this.currentAddressId = id;
-        address =  addressService.getAddressById(id);
-        model.addAttribute("Address", address);
-        return "address/formUpdateAddress";
+   
+
+    @PutMapping("{id}")
+    public void updateAddress(@PathVariable Integer id, @RequestBody Address updatedAddress){
+       Address oldAddress = addressService.getAddressById(id);
+       updatedAddress.setId(oldAddress.getId());
+       addressService.saveAddress(updatedAddress);
     }
 
-    @RequestMapping("/updateAddress")
-    public String updateAddress(@ModelAttribute("Address") Address newAddress, Model model){
-        Address address = addressService.updateById(currentAddressId,newAddress);
-        model.addAttribute("addressAtualizado", address);
-        this.currentAddressId = null;
-        return "address/updateAddressPage";
+    @PatchMapping("{id}")
+    public void updateAddressByPatch(@PathVariable Integer id, @RequestBody Address updatedAddress) {
+        Address oldAddress = addressService.getAddressById(id);
+        updatedAddress.setId(oldAddress.getId());
+        if(updatedAddress.getHqAddress() == null) updatedAddress.setHqAddress(oldAddress.getHqAddress());
+        if(updatedAddress.getWebSiteAddress() == null) updatedAddress.setWebSiteAddress(oldAddress.getWebSiteAddress());
+        if(updatedAddress.getPublisher() == null) updatedAddress.setPublisher(oldAddress.getPublisher());
+        addressService.saveAddress(updatedAddress);
     }
 }
