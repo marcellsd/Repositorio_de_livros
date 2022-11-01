@@ -1,5 +1,6 @@
 package com.ufrn.imd.web2.projeto01.livros.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufrn.imd.web2.projeto01.livros.dtos.BookDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
+import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
@@ -40,18 +44,35 @@ public class BookController {
 
 
     @GetMapping
-    public List<Book> getBookList() {
-        return bookService.getBooksList();
+    public List<InfoBookDTO> getBookList() {
+        return bookService.getBooksDTOList();
     }
 
     @GetMapping("{id}")
-    public Book getBookById(@PathVariable Integer id) {
-        return bookService.getBookById(id);
+    public InfoBookDTO getBookById(@PathVariable Integer id) {
+        return bookService.getBookDTOById(id);
     }
 
     @PostMapping
-    public Book saveBook(@RequestBody Book book) {
-        return bookService.saveBook(book);
+    public InfoBookDTO saveBook(@RequestBody BookDTO bookDTO) {
+        Book book = new Book();
+        book.setTitle(bookDTO.getTitle());
+        book.setNumberOfPages(bookDTO.getNumberOfPages());
+        book.setEdition(bookDTO.getEdition());
+        book.setPublicationDate(bookDTO.getPublicationDate());
+        book.setIsbn(bookDTO.getIsbn());
+        book.setPublisher(publisherService.getPublisherById(bookDTO.getPublisherId()));
+        List<Author> authors = new ArrayList<Author>();
+        for (Integer authorId : bookDTO.getAuthorsId()) {
+            Author author = authorService.getAuthorById(authorId);
+            List<Book> books = author.getBooks();
+            books.add(book);
+            author.setBooks(books);
+            authors.add(author);
+        }
+        book.setAuthors(authors);
+        Book newBook  = bookService.saveBook(book);
+        return bookService.getBookDTOById(newBook.getId());
     }
 
     @DeleteMapping("{id}")

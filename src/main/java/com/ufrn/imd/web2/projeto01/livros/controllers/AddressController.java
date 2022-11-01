@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAddressDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
 
@@ -28,8 +29,8 @@ public class AddressController {
     AddressService addressService;
 
     @GetMapping()
-    public List<Address> showAddressList() {
-        return addressService.getAddressList();
+    public List<InfoAddressDTO> showAddressList() {
+        return addressService.getAddressDTOList();
     };
 
 
@@ -46,8 +47,8 @@ public class AddressController {
     }
 
     @GetMapping("{id}")
-    public Address getAddressById(@PathVariable Integer id){
-        return addressService.getAddressById(id);
+    public InfoAddressDTO getAddressById(@PathVariable Integer id){
+        return addressService.getAddressDTOById(id);
     }
     
    

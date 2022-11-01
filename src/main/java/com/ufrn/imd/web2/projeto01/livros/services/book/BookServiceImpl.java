@@ -1,11 +1,17 @@
 package com.ufrn.imd.web2.projeto01.livros.services.book;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorBookDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoPublisherBookDTO;
+import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.repositories.BookRepository;
 
@@ -44,6 +50,73 @@ public class BookServiceImpl implements BookService{
             return bookRepository.save(newBook);
 	}
 
+    @Override
+    public InfoBookDTO getBookDTOById(Integer id) {
+        Book book = bookRepository.findById(id).map(bookBD -> {
+            return bookBD;
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado"));
+          
+        List<InfoAuthorBookDTO> authorsDTO = authorToAuthorDTO(book.getAuthors());
+        
+        InfoBookDTO bookDTO = InfoBookDTO.builder()
+                                .id(book.getId())
+                                .title(book.getTitle())
+                                .numberOfPages(book.getNumberOfPages())
+                                .edition(book.getEdition())
+                                .publicationDate(book.getPublicationDate())
+                                .isbn(book.getIsbn())
+                                .authors(authorsDTO)
+                                .publisher(InfoPublisherBookDTO.builder()
+                                                                .id(book.getPublisher().getId())
+                                                                .name(book.getPublisher().getName())
+                                                                .build())
+                                .build();
+
+        return bookDTO;
+    }
     
+    @Override
+    public List<InfoBookDTO> getBooksDTOList(){
+        List<Book> books = bookRepository.findAll();
+        List<InfoBookDTO> bookDTOs = new ArrayList<InfoBookDTO>();
+        for (Book book : books) {
+            List<InfoAuthorBookDTO> authorsDTO = authorToAuthorDTO(book.getAuthors());
+            InfoBookDTO bookDTO = InfoBookDTO.builder()
+                                .id(book.getId())
+                                .title(book.getTitle())
+                                .numberOfPages(book.getNumberOfPages())
+                                .edition(book.getEdition())
+                                .publicationDate(book.getPublicationDate())
+                                .isbn(book.getIsbn())
+                                .authors(authorsDTO)
+                                .publisher(InfoPublisherBookDTO.builder()
+                                                                .id(book.getPublisher().getId())
+                                                                .name(book.getPublisher().getName())
+                                                                .build())
+                                .build();
+            bookDTOs.add(bookDTO);
+            
+        }
+
+        return bookDTOs;
+    }
+
     
+    private List<InfoAuthorBookDTO> authorToAuthorDTO(List<Author> authors){
+        if (authors!=null){
+            List<InfoAuthorBookDTO> authorsDTO = new ArrayList<InfoAuthorBookDTO>();
+
+            for (Author author : authors) {
+                InfoAuthorBookDTO authorDTO = InfoAuthorBookDTO.builder()
+                                            .id(author.getId())
+                                            .name(author.getName())
+                                            .build();
+                authorsDTO.add(authorDTO);
+            }
+
+            return authorsDTO;
+        }
+
+        return null;
+    }
 }

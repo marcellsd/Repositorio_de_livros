@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoPublisherDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.PublisherDTO;
+import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
 import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
@@ -33,18 +36,28 @@ public class PublisherController {
     AddressService addressService;
 
     @GetMapping
-    public List<Publisher> getPublisherList() {
-        return publisherService.getPublishersList();
+    public List<InfoPublisherDTO> getPublisherList() {
+        return publisherService.getPublishersDTOList();
     }
 
     @GetMapping("{id}")
-    public Publisher getPublisherById(@PathVariable Integer id) {
-        return publisherService.getPublisherById(id);
+    public InfoPublisherDTO getPublisherById(@PathVariable Integer id) {
+        return publisherService.getPublisherDTOById(id);
     }
 
     @PostMapping()
-    public Publisher savePublisher(@RequestBody Publisher publisher) {
-        return publisherService.savePublisher(publisher);
+    public InfoPublisherDTO savePublisher(@RequestBody PublisherDTO publisherDTO) {
+        Address address = new Address();
+        address.setHqAddress(publisherDTO.getHqAddress());
+        address.setWebSiteAddress(publisherDTO.getWebSiteAddress());
+        Address newAddress = addressService.saveAddress(address);
+        Publisher publisher = new Publisher();
+        publisher.setAddress(newAddress);
+        publisher.setName(publisherDTO.getName());
+        Publisher newPublisher  = publisherService.savePublisher(publisher);
+        newAddress.setPublisher(newPublisher);
+
+        return publisherService.getPublisherDTOById(newPublisher.getId());
     }
 
     @DeleteMapping("{id}")
