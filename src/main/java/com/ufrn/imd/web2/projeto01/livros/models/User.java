@@ -24,10 +24,10 @@ public class User {
     private String password;
 
     @Column
-    private boolean isAuthor;
+    private Boolean isAuthor;
 
     @Column
-    private boolean isPublisher;
+    private Boolean isPublisher;
 
     public Integer getId() {
         return id;
@@ -37,11 +37,11 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUserName(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -53,19 +53,19 @@ public class User {
         this.password = password;
     }
 
-    public boolean isAuthor() {
+    public Boolean getIsAuthor() {
         return isAuthor;
     }
 
-    public void setAuthor(boolean isAuthor) {
+    public void setIsAuthor(Boolean isAuthor) {
         this.isAuthor = isAuthor;
     }
 
-    public boolean isPublisher() {
+    public Boolean getIsPublisher() {
         return isPublisher;
     }
 
-    public void setPublisher(boolean isPublisher) {
+    public void setIsPublisher(Boolean isPublisher) {
         this.isPublisher = isPublisher;
     }
 
