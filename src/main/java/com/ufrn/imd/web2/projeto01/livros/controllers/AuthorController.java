@@ -50,11 +50,7 @@ public class AuthorController {
             List<Book> books = new ArrayList<Book>();
             for (Integer bookId : authorDTO.getBooksId()) {
                 Book book = bookService.getBookById(bookId);
-                if (book!=null){
-                    List<Author> authorList = book.getAuthors();
-                    authorList.add(author);
-                    book.setAuthors(authorList);
-                    bookService.saveBook(book);
+                if(book != null) {
                     books.add(book);
                 }
             }
@@ -84,11 +80,22 @@ public class AuthorController {
     }
 
     @PatchMapping("{id}")
-    public void updateAuthorByPatch(@PathVariable Integer id, @RequestBody Author updatedAuthor) {
+    public void updateAuthorByPatch(@PathVariable Integer id, @RequestBody AuthorDTO updateAuthorDTO) {
         Author oldAuthor = authorService.getAuthorById(id);
+        Author updatedAuthor = new Author();
         updatedAuthor.setId(oldAuthor.getId());
-        if(updatedAuthor.getBooks() == null) updatedAuthor.setBooks(oldAuthor.getBooks());
-        if(updatedAuthor.getName() == null) updatedAuthor.setName(oldAuthor.getName());
+        if(updateAuthorDTO.getBooksId() == null) {updatedAuthor.setBooks(oldAuthor.getBooks());}
+        else{
+            List<Book> books = new ArrayList<Book>();
+            for (Integer bookId : updateAuthorDTO.getBooksId()) {
+                Book book = bookService.getBookById(bookId);
+                if(book != null) {
+                    books.add(book);
+                }
+            }
+            updatedAuthor.setBooks(books);
+        }
+        if(updateAuthorDTO.getName() == null) updatedAuthor.setName(oldAuthor.getName());
         authorService.saveAuthor(updatedAuthor);
     }
 }
