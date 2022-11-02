@@ -22,30 +22,17 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     
     private final UserServiceImpl userService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody User user) {
-        String cryptPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(cryptPassword);
         return userService.saveUser(user);
     }
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public User updateUser(@PathVariable Integer id, @RequestBody User updatedUser) {
-        User user = userService.getUserById(id);
-
-        updatedUser.setId(user.getId());
-        if(updatedUser.getIsAuthor() == null)  updatedUser.setIsAuthor(user.getIsAuthor());
-        if(updatedUser.getIsPublisher() == null) updatedUser.setIsPublisher(user.getIsPublisher());
-        if(updatedUser.getPassword() == null) updatedUser.setPassword(user.getPassword());
-        if(updatedUser.getUsername() != null) {throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot change username");}
-        else{
-           updatedUser.setUsername(user.getUsername()); 
-        };
-        return userService.saveUser(updatedUser);
+        return userService.updateUserById(id, updatedUser);
     }
 
 
