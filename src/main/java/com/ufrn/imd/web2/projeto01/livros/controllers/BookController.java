@@ -21,6 +21,7 @@ import com.ufrn.imd.web2.projeto01.livros.dtos.BookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
+import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
@@ -89,16 +90,31 @@ public class BookController {
     }
     
     @PatchMapping("{id}")
-    public void updateBookByPatch(@PathVariable Integer id, @RequestBody Book updatedBook) {
+    public void updateBookByPatch(@PathVariable Integer id, @RequestBody BookDTO updatedBookDTO) {
         Book oldBook = bookService.getBookById(id);
+        Book updatedBook = new Book();
         updatedBook.setId(oldBook.getId());
-        if(updatedBook.getAuthors() == null) updatedBook.setAuthors(oldBook.getAuthors());
-        if(updatedBook.getEdition() == null) updatedBook.setEdition(oldBook.getEdition());
-        if(updatedBook.getIsbn() == null) updatedBook.setIsbn(oldBook.getIsbn());
-        if(updatedBook.getNumberOfPages() == null) updatedBook.setNumberOfPages(oldBook.getNumberOfPages());
-        if(updatedBook.getPublicationDate() == null) updatedBook.setPublicationDate(oldBook.getPublicationDate());
-        if(updatedBook.getPublisher() == null) updatedBook.setPublisher(oldBook.getPublisher());
-        if(updatedBook.getTitle() == null) updatedBook.setTitle(oldBook.getTitle());
+        if(updatedBookDTO.getAuthorsId() == null || updatedBookDTO.getAuthorsId().isEmpty()) {updatedBook.setAuthors(oldBook.getAuthors());}
+        else{
+            List<Author> authors = new ArrayList<Author>();
+            for (Integer authorId : updatedBookDTO.getAuthorsId()) {
+                Author author = authorService.getAuthorById(authorId);
+                if (author != null) {
+                    authors.add(author);
+                }
+            }
+            updatedBook.setAuthors(authors);
+        }
+        if(updatedBookDTO.getEdition() == null) updatedBook.setEdition(oldBook.getEdition());
+        if(updatedBookDTO.getIsbn() == null) updatedBook.setIsbn(oldBook.getIsbn());
+        if(updatedBookDTO.getNumberOfPages() == null) updatedBook.setNumberOfPages(oldBook.getNumberOfPages());
+        if(updatedBookDTO.getPublicationDate() == null) updatedBook.setPublicationDate(oldBook.getPublicationDate());
+        if(updatedBookDTO.getPublisherId() == null) {updatedBook.setPublisher(oldBook.getPublisher());}
+        else {
+            Publisher publisher = publisherService.getPublisherById(updatedBookDTO.getPublisherId());
+            if(publisher != null) updatedBook.setPublisher(publisher);
+        }
+        if(updatedBookDTO.getTitle() == null) updatedBook.setTitle(oldBook.getTitle());
         bookService.saveBook(updatedBook);
     }
 }
