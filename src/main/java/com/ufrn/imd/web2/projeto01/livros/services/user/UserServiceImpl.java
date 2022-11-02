@@ -16,7 +16,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public TokenDTO authenticate(CredentialsDTO credentials) {
-        // TODO Auto-generated method stub
         return null;
     }
 
