@@ -26,11 +26,6 @@ public class UserServiceImpl implements UserService{
         return null;
     }
 
-    @Override
-    public User updatePassword(User user) {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     @Override
     public User getUserById(Integer userId) {
