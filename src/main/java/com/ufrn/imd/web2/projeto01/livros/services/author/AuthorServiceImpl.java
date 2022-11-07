@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.AuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.CredentialsDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.RepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.TokenDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.SenhaInvalidaException;
 import com.ufrn.imd.web2.projeto01.livros.models.RepoUser;
@@ -35,14 +36,14 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RepoUser saveUser(@RequestBody RepoUser user) {
-        return userService.saveUser(user);
+    public RepoUser saveUser(@RequestBody RepoUserDTO userDTO) {
+        return userService.saveUser(userDTO);
     }
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RepoUser updateUser(@PathVariable Integer id, @RequestBody RepoUser updatedUser) {
-        return userService.updateUserById(id, updatedUser);
+    public RepoUser updateUser(@PathVariable Integer id, @RequestBody RepoUserDTO updatedUserDTO) {
+        return userService.updateUserById(id, updatedUserDTO);
     }
 
     @GetMapping
