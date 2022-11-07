@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAddressDTO;
+import com.ufrn.imd.web2.projeto01.livros.exception.NotFoundException;
 import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.repositories.AddressRepository;
 
@@ -27,7 +26,7 @@ public class AddressServiceImpl implements AddressService {
         
         return addressRepository.findById(id).map(address -> {
             return address;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+        }).orElseThrow(() -> new NotFoundException("Address not found"));
     }
 
     @Override
@@ -41,16 +40,27 @@ public class AddressServiceImpl implements AddressService {
     }
 
 	@Override
-	public Address updateById(Integer currentAddressId, Address newAddress) {
-        newAddress.setId(currentAddressId);
-		return addressRepository.save(newAddress);
+	public Address updatePutById(Integer currentAddressId, Address updatedAddress) {
+        updatedAddress.setId(currentAddressId);
+		return saveAddress(updatedAddress);
 	}
+
+
+    @Override
+    public Address updatePatchById(Integer currentAddressId, Address updatedAddress) {
+        Address oldAddress = getAddressById(currentAddressId);
+        updatedAddress.setId(oldAddress.getId());
+        if(updatedAddress.getHqAddress() == null) updatedAddress.setHqAddress(oldAddress.getHqAddress());
+        if(updatedAddress.getWebSiteAddress() == null) updatedAddress.setWebSiteAddress(oldAddress.getWebSiteAddress());
+        if(updatedAddress.getPublisher() == null) updatedAddress.setPublisher(oldAddress.getPublisher());
+        return saveAddress(updatedAddress);
+    }
 
     @Override
     public InfoAddressDTO getAddressDTOById(Integer id) {
         Address address = addressRepository.findById(id).map(addressBD -> {
             return addressBD;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado"));
+        }).orElseThrow(() -> new NotFoundException("Address not found"));
         
         InfoAddressDTO addressDTO = InfoAddressDTO.builder()
                                     .id(address.getId())

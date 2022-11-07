@@ -55,18 +55,11 @@ public class AddressController {
 
     @PutMapping("{id}")
     public void updateAddress(@PathVariable Integer id, @RequestBody Address updatedAddress){
-       Address oldAddress = addressService.getAddressById(id);
-       updatedAddress.setId(oldAddress.getId());
-       addressService.saveAddress(updatedAddress);
+       addressService.updatePutById(id, updatedAddress);
     }
 
     @PatchMapping("{id}")
     public void updateAddressByPatch(@PathVariable Integer id, @RequestBody Address updatedAddress) {
-        Address oldAddress = addressService.getAddressById(id);
-        updatedAddress.setId(oldAddress.getId());
-        if(updatedAddress.getHqAddress() == null) updatedAddress.setHqAddress(oldAddress.getHqAddress());
-        if(updatedAddress.getWebSiteAddress() == null) updatedAddress.setWebSiteAddress(oldAddress.getWebSiteAddress());
-        if(updatedAddress.getPublisher() == null) updatedAddress.setPublisher(oldAddress.getPublisher());
-        addressService.saveAddress(updatedAddress);
+        addressService.updatePatchById(id, updatedAddress);
     }
 }
