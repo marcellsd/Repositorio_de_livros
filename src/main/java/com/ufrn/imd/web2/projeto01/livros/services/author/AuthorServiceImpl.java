@@ -1,12 +1,10 @@
 package com.ufrn.imd.web2.projeto01.livros.services.author;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,9 +28,18 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     AuthorRepository authorRepository;
 
-    @Autowired
-    @Qualifier("bookServiceImpl")
+    
     BookService bookService;
+
+    public BookService getBookService() {
+        return bookService;
+    }
+
+    
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
+    
 
     @Autowired
     RepoUserRepository repoUserRepository;
@@ -192,6 +199,12 @@ public class AuthorServiceImpl implements AuthorService {
 
         return null;
     }
+
+   
+
+    
+
+    
 
  
 }

@@ -20,7 +20,6 @@ import com.ufrn.imd.web2.projeto01.livros.dtos.AuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
-import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 
 @RestController
 @RequestMapping("/api/author")
