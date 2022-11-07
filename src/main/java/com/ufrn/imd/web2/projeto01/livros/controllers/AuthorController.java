@@ -1,6 +1,5 @@
 package com.ufrn.imd.web2.projeto01.livros.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ufrn.imd.web2.projeto01.livros.dtos.AuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
-import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
 
@@ -32,10 +30,6 @@ public class AuthorController {
     @Qualifier("authorServiceImpl")
     AuthorService authorService;
 
-    @Autowired
-    @Qualifier("bookServiceImpl")
-    BookService bookService;
-   
 
     @GetMapping()
     public List<InfoAuthorDTO> showAuthorList(){
@@ -44,19 +38,7 @@ public class AuthorController {
 
     @PostMapping
     public InfoAuthorDTO saveAuthor(@RequestBody AuthorDTO authorDTO) {
-        Author author = new Author();
-        author.setName(authorDTO.getName());
-        if (authorDTO.getBooksId()!=null){
-            List<Book> books = new ArrayList<Book>();
-            for (Integer bookId : authorDTO.getBooksId()) {
-                Book book = bookService.getBookById(bookId);
-                if(book != null) {
-                    books.add(book);
-                }
-            }
-            author.setBooks(books);
-        }
-        Author newAuthor = authorService.saveAuthor(author);
+        Author newAuthor = authorService.saveAuthor(authorDTO);
         return authorService.getAuthorDTOById(newAuthor.getId());
     }
 
@@ -76,26 +58,11 @@ public class AuthorController {
     public void updateAuthor(@PathVariable Integer id, @RequestBody Author updatedAuthor) {
         Author oldAuthor = authorService.getAuthorById(id);
         updatedAuthor.setId(oldAuthor.getId());
-        authorService.saveAuthor(updatedAuthor);
+        authorService.updatePutById( id ,updatedAuthor);
     }
 
     @PatchMapping("{id}")
     public void updateAuthorByPatch(@PathVariable Integer id, @RequestBody AuthorDTO updateAuthorDTO) {
-        Author oldAuthor = authorService.getAuthorById(id);
-        Author updatedAuthor = new Author();
-        updatedAuthor.setId(oldAuthor.getId());
-        if(updateAuthorDTO.getBooksId() == null) {updatedAuthor.setBooks(oldAuthor.getBooks());}
-        else{
-            List<Book> books = new ArrayList<Book>();
-            for (Integer bookId : updateAuthorDTO.getBooksId()) {
-                Book book = bookService.getBookById(bookId);
-                if(book != null) {
-                    books.add(book);
-                }
-            }
-            updatedAuthor.setBooks(books);
-        }
-        if(updateAuthorDTO.getName() == null) updatedAuthor.setName(oldAuthor.getName());
-        authorService.saveAuthor(updatedAuthor);
+        authorService.updatePatchById(id, updateAuthorDTO);
     }
 }
