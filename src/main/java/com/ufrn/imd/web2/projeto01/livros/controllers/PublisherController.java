@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoPublisherDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.PublisherDTO;
-import com.ufrn.imd.web2.projeto01.livros.models.Address;
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
-import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
@@ -31,9 +29,6 @@ public class PublisherController {
     @Qualifier("publisherServiceImpl")
     PublisherService publisherService;
     
-    @Autowired
-    @Qualifier("addressServiceImpl")
-    AddressService addressService;
 
     @GetMapping
     public List<InfoPublisherDTO> getPublisherList() {
@@ -47,15 +42,7 @@ public class PublisherController {
 
     @PostMapping()
     public InfoPublisherDTO savePublisher(@RequestBody PublisherDTO publisherDTO) {
-        Address address = new Address();
-        address.setHqAddress(publisherDTO.getHqAddress());
-        address.setWebSiteAddress(publisherDTO.getWebSiteAddress());
-        Address newAddress = addressService.saveAddress(address);
-        Publisher publisher = new Publisher();
-        publisher.setAddress(newAddress);
-        publisher.setName(publisherDTO.getName());
-        Publisher newPublisher  = publisherService.savePublisher(publisher);
-        newAddress.setPublisher(newPublisher);
+        Publisher newPublisher = publisherService.savePublisher(publisherDTO);
 
         return publisherService.getPublisherDTOById(newPublisher.getId());
     }
@@ -68,19 +55,12 @@ public class PublisherController {
 
     @PutMapping("{id}")
     public void updatePublisher(@PathVariable Integer id, @RequestBody Publisher updatedPublisher) {
-        Publisher oldPublisher = publisherService.getPublisherById(id);
-        updatedPublisher.setId(oldPublisher.getId());
-        publisherService.savePublisher(oldPublisher);
+        publisherService.updatePutById(id, updatedPublisher);
     }
 
     @PatchMapping("{id}")
     public void updatePublisherByPatch(@PathVariable Integer id, @RequestBody Publisher updatedPublisher) {
-        Publisher oldPublisher = publisherService.getPublisherById(id);
-        updatedPublisher.setId(oldPublisher.getId());
-        if(updatedPublisher.getAddress() == null) updatedPublisher.setAddress(oldPublisher.getAddress());
-        if(updatedPublisher.getBooks() == null) updatedPublisher.setBooks(oldPublisher.getBooks());
-        if(updatedPublisher.getName() == null) updatedPublisher.setName(oldPublisher.getName());
-        publisherService.savePublisher(oldPublisher);
+        publisherService.updatePatchById(id, updatedPublisher);
     }
 
 }

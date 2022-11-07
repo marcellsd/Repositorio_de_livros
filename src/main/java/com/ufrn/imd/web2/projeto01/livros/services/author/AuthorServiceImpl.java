@@ -103,6 +103,7 @@ public class AuthorServiceImpl implements AuthorService {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
            }
             newAuthor.setId(currentAuthorId);
+            newAuthor.setCreator(author.getCreator());
             newAuthor.setBooks(author.getBooks());
             return authorRepository.save(newAuthor);
         }else {

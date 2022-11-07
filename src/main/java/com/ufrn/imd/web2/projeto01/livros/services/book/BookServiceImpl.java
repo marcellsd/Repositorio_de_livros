@@ -97,9 +97,9 @@ public class BookServiceImpl implements BookService{
            if(oldBook.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
            }
-        updatedBook.setId(oldBook.getId());
-            updatedBook.setId(currentBookId);
-            return bookRepository.save(updatedBook);
+        updatedBook.setId(currentBookId);
+        updatedBook.setCreatorId(oldBook.getCreatorId());
+        return bookRepository.save(updatedBook);
 	}
 
 	@Override
