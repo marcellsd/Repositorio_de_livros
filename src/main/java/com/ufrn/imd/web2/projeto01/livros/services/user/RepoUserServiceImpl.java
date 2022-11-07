@@ -6,6 +6,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,16 +49,22 @@ public class RepoUserServiceImpl implements UserDetailsService{
 
     public RepoUser updateUserById(Integer id, RepoUser updatedUser) {
         RepoUser user = getUserById(id);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        RepoUser loggedUser = userRepository.findByUsername(auth.getName()).get();
+        if(user.getId() != loggedUser.getId()) throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Unauthorized edition by this logged user");
 
         updatedUser.setId(user.getId());
         if(updatedUser.getIsAuthor() == null)  updatedUser.setIsAuthor(user.getIsAuthor());
         if(updatedUser.getIsPublisher() == null) updatedUser.setIsPublisher(user.getIsPublisher());
-        if(updatedUser.getPassword() == null) updatedUser.setPassword(user.getPassword());
-        if(updatedUser.getUsername() != null) {throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Cannot change username");}
+        if(updatedUser.getPassword() == null) {updatedUser.setPassword(user.getPassword());}
+        if(updatedUser.getUsername() != null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "username changes are not authorized");
+        }
         else{
            updatedUser.setUsername(user.getUsername()); 
         };
-        return userRepository.save(updatedUser);
+        
+        return saveUser(updatedUser);
     }
 
     public UserDetails authenticate( RepoUser repoUser ){

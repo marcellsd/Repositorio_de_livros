@@ -50,7 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Author author = getAuthorById(id);
         if(author.getCreator() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Exclusão não autorizada para o usuário logado");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized deletion for this logged user");
        }
         authorRepository.deleteById(id);
     }
@@ -72,7 +72,7 @@ public class AuthorServiceImpl implements AuthorService {
         if(user != null) {
             author.setCreator(user.get().getId());
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "usuário não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         author.setName(authorDTO.getName());
         if (authorDTO.getBooksId()!=null){
@@ -100,7 +100,7 @@ public class AuthorServiceImpl implements AuthorService {
            Author author =  oldAuthor.get();
            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(author.getCreator() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can't change username");
            }
             newAuthor.setId(currentAuthorId);
             newAuthor.setCreator(author.getCreator());
@@ -117,7 +117,7 @@ public class AuthorServiceImpl implements AuthorService {
         Author updatedAuthor = new Author();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if(oldAuthor.getCreator() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Author edition not authorized to this logged user");
         }
         updatedAuthor.setId(oldAuthor.getId());
         updatedAuthor.setCreator(oldAuthor.getCreator());
@@ -145,7 +145,7 @@ public class AuthorServiceImpl implements AuthorService {
     public InfoAuthorDTO getAuthorDTOById(Integer id) {
         Author author = authorRepository.findById(id).map(authorBD -> {
             return authorBD;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Autor não encontrado"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         
         List<InfoBookAuthorDTO> booksDTO = bookToBookDTO(author.getBooks());
 

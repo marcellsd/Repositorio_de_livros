@@ -24,7 +24,6 @@ public class RepoUser {
     @NotEmpty(message = "Campo password é obrigatório")
     private String password;
 
-
     @Column
     private Boolean isAuthor;
 

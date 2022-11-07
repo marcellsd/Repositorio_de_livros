@@ -42,7 +42,7 @@ public class PublisherServiceImpl implements PublisherService{
         Publisher oldPublisher = getPublisherById(id);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(oldPublisher.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Exclusão não autorizada para o usuário logado");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized deletion for this logged user");
            }
         publishedRepository.deleteById(id);
     }
@@ -68,7 +68,7 @@ public class PublisherServiceImpl implements PublisherService{
         if(user != null) {
             publisher.setCreatorId(user.get().getId());
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "usuário não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         return publishedRepository.save(publisher);
     }
@@ -83,7 +83,7 @@ public class PublisherServiceImpl implements PublisherService{
         Publisher oldPublisher = getPublisherById(currentPublisherId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(oldPublisher.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized edition for this logged user");
            }
         updatedPublisher.setId(oldPublisher.getId());
             return publishedRepository.save(updatedPublisher);
@@ -94,7 +94,7 @@ public class PublisherServiceImpl implements PublisherService{
         Publisher oldPublisher = getPublisherById(currentPublisherId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(oldPublisher.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized edition for this logged user");
            }
         updatedPublisher.setId(oldPublisher.getId());
         updatedPublisher.setCreatorId(oldPublisher.getCreatorId());
@@ -133,7 +133,7 @@ public class PublisherServiceImpl implements PublisherService{
     public InfoPublisherDTO getPublisherDTOById(Integer id) {
         Publisher publisher = publishedRepository.findById(id).map(publisherDB -> {
             return publisherDB;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Editora não encontrada"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Publisher not found"));
 
         List<InfoBookPublisherDTO> booksDTO = BooksToBooksDTO(publisher.getBooks());
 

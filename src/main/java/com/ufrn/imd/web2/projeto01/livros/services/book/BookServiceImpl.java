@@ -47,7 +47,7 @@ public class BookServiceImpl implements BookService{
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Book book = getBookById(id);
         if(book.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Exclusão não autorizada para o usuário logado");
+             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized deletion for this logged user");
         }
         bookRepository.deleteById(id);
         
@@ -80,7 +80,7 @@ public class BookServiceImpl implements BookService{
         if(user != null) {
             book.setCreatorId(user.get().getId());
         }else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "usuário não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
         return bookRepository.save(book);
     }
@@ -95,7 +95,7 @@ public class BookServiceImpl implements BookService{
         Book oldBook = getBookById(currentBookId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(oldBook.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized edition for this logged user");
            }
         updatedBook.setId(currentBookId);
         updatedBook.setCreatorId(oldBook.getCreatorId());
@@ -107,7 +107,7 @@ public class BookServiceImpl implements BookService{
         Book oldBook = getBookById(currentBookId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(oldBook.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized edition for this logged user");
            }
         Book updatedBook = new Book();
         updatedBook.setId(currentBookId);
@@ -155,7 +155,7 @@ public class BookServiceImpl implements BookService{
     public InfoBookDTO getBookDTOById(Integer id) {
         Book book = bookRepository.findById(id).map(bookBD -> {
             return bookBD;
-        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado"));
+        }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Book not found"));
           
         List<InfoAuthorBookDTO> authorsDTO = authorToAuthorDTO(book.getAuthors());
         
