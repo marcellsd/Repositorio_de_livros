@@ -8,26 +8,37 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+
 @Entity
 @Table(name = "users")
-public class User {
+public class RepoUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(length = 15)
-    @NotEmpty
+    @NotEmpty(message = "Campo username é obrigatório")
     private String username;
 
     @Column
-    @NotEmpty
+    @NotEmpty(message = "Campo password é obrigatório")
     private String password;
+
 
     @Column
     private Boolean isAuthor;
 
     @Column
     private Boolean isPublisher;
+    
+    public RepoUser(){}
+    
+    public RepoUser(String username, String password, Boolean isAuthor, Boolean isPublisher){
+        this.username = username;
+        this.password = password;
+        this.isAuthor = isAuthor;
+        this.isPublisher = isPublisher;
+    }
 
     public Integer getId() {
         return id;
