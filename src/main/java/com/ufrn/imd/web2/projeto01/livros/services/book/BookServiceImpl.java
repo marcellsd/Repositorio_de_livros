@@ -2,13 +2,15 @@ package com.ufrn.imd.web2.projeto01.livros.services.book;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
-
+import org.springframework.security.core.context.SecurityContextHolder;
 import com.ufrn.imd.web2.projeto01.livros.dtos.BookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
@@ -16,7 +18,9 @@ import com.ufrn.imd.web2.projeto01.livros.dtos.InfoPublisherBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
+import com.ufrn.imd.web2.projeto01.livros.models.RepoUser;
 import com.ufrn.imd.web2.projeto01.livros.repositories.BookRepository;
+import com.ufrn.imd.web2.projeto01.livros.repositories.RepoUserRepository;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
 import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
@@ -31,12 +35,20 @@ public class BookServiceImpl implements BookService{
     PublisherService publisherService;
 
     @Autowired
+    RepoUserRepository repoUserRepository;
+
+    @Autowired
     @Qualifier("authorServiceImpl")
     AuthorService authorService;
     
     
     @Override
     public void deleteBookById(Integer id) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Book book = getBookById(id);
+        if(book.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
+             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Exclusão não autorizada para o usuário logado");
+        }
         bookRepository.deleteById(id);
         
     }
@@ -63,6 +75,13 @@ public class BookServiceImpl implements BookService{
             authors.add(author);
         }
         book.setAuthors(authors);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<RepoUser> user = repoUserRepository.findByUsername(auth.getName());
+        if(user != null) {
+            book.setCreatorId(user.get().getId());
+        }else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "usuário não encontrado");
+        }
         return bookRepository.save(book);
     }
 
@@ -74,15 +93,25 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public Book updatePutById(Integer currentBookId, Book updatedBook) {
         Book oldBook = getBookById(currentBookId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+           if(oldBook.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+           }
         updatedBook.setId(oldBook.getId());
             updatedBook.setId(currentBookId);
             return bookRepository.save(updatedBook);
 	}
+
 	@Override
 	public Book updatePatchById(Integer currentBookId, BookDTO updatedBookDTO) {
         Book oldBook = getBookById(currentBookId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+           if(oldBook.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Edição não autorizada para o usuário logado");
+           }
         Book updatedBook = new Book();
         updatedBook.setId(currentBookId);
+        updatedBook.setCreatorId(oldBook.getCreatorId());
         if(updatedBookDTO.getAuthorsId() == null) {updatedBook.setAuthors(oldBook.getAuthors());}
         else{
             List<Author> authors = new ArrayList<Author>();
