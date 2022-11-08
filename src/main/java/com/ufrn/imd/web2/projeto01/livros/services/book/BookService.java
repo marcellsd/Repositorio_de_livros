@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.BookDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
+import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 
 @Service
@@ -18,4 +20,5 @@ public interface BookService {
     public List<InfoBookDTO> getBooksDTOList();
     public Book updatePutById(Integer currentBookId, Book updatedBook);
     public Book updatePatchById(Integer currentBookId, BookDTO updatedBookDTO);
+    public List<InfoAuthorBookDTO> authorToAuthorDTO(List<Author> authors);
 }

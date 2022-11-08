@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoFavoritesDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.NotFoundException;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
@@ -108,6 +109,13 @@ public class FavoritesServiceImpl implements FavoritesService{
             return favorite;
         }).orElseThrow(() ->  new NotFoundException("Favorite not found"));
     }
+
+    @Override
+    public Favorites convertFavoritesFromDTO(InfoFavoritesDTO infoFavoritesDTO) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 
     
     

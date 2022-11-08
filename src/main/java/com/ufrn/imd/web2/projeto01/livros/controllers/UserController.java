@@ -2,6 +2,8 @@ package com.ufrn.imd.web2.projeto01.livros.controllers;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,11 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.CredentialsDTO;
-import com.ufrn.imd.web2.projeto01.livros.dtos.RepoUserDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.TokenDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.SenhaInvalidaException;
+import com.ufrn.imd.web2.projeto01.livros.models.Favorites;
 import com.ufrn.imd.web2.projeto01.livros.models.RepoUser;
 import com.ufrn.imd.web2.projeto01.livros.security.JwtService;
+import com.ufrn.imd.web2.projeto01.livros.services.favorites.FavoritesService;
 import com.ufrn.imd.web2.projeto01.livros.services.user.RepoUserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -34,15 +39,19 @@ public class UserController {
     private final RepoUserServiceImpl userService;
     private final JwtService jwtService;
 
+    @Autowired
+    @Qualifier("favoriteServiceImpl")
+    FavoritesService favoriteService;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RepoUser saveUser(@RequestBody RepoUserDTO userDTO) {
+    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) {
         return userService.saveUser(userDTO);
     }
 
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public RepoUser updateUser(@PathVariable Integer id, @RequestBody RepoUserDTO updatedUserDTO) {
+    public RepoUser updateUser(@PathVariable Integer id, @RequestBody InfoRepoUserDTO updatedUserDTO) {
         return userService.updateUserById(id, updatedUserDTO);
     }
 
@@ -63,5 +72,20 @@ public class UserController {
         }
     }
     
+    @GetMapping("{id}")
+    public InfoRepoUserDTO getRepoUser(@PathVariable Integer id) {
+        return userService.getFavoritesDTO(id);
+    }
+
+    @PostMapping("{id}/favorite")
+    @ResponseStatus(HttpStatus.OK)
+    public InfoRepoUserDTO setFavorite(@PathVariable Integer id, @RequestBody FavoriteDTO favoritesDTO){
+        RepoUser user = userService.getUserById(id);
+        Favorites favorites = favoriteService.convertFavoritesFromDTO(favoritesDTO);
+        user.setFavorite(favorites);
+        userService.saveRawUser(user);
+        return userService.getFavoritesDTO(id);
+    }
+   
 
 }
