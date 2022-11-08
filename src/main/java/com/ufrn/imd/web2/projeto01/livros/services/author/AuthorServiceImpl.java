@@ -60,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
         
         return authorRepository.findById(id).map(author -> {
             return author;
-        }).orElseThrow();
+        }).orElseThrow(() -> new NotFoundException("Author not found"));
     }
 
     @Override

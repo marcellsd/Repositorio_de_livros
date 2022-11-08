@@ -39,9 +39,6 @@ public class UserController {
     private final RepoUserServiceImpl userService;
     private final JwtService jwtService;
 
-    @Autowired
-    @Qualifier("favoriteServiceImpl")
-    FavoritesService favoriteService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -80,10 +77,7 @@ public class UserController {
     @PostMapping("{id}/favorite")
     @ResponseStatus(HttpStatus.OK)
     public InfoRepoUserDTO setFavorite(@PathVariable Integer id, @RequestBody FavoriteDTO favoritesDTO){
-        RepoUser user = userService.getUserById(id);
-        Favorites favorites = favoriteService.convertFavoritesFromDTO(favoritesDTO);
-        user.setFavorite(favorites);
-        userService.saveRawUser(user);
+        userService.saveFavorite(id, favoritesDTO);
         return userService.getFavoritesDTO(id);
     }
    

@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name = "favorites")
 public class Favorites {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "creatorId")

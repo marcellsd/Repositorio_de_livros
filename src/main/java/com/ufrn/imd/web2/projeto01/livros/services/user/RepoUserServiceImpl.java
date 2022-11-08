@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookAuthorDTO;
@@ -65,6 +66,7 @@ public class RepoUserServiceImpl implements UserDetailsService{
         user.setUsername(userDTO.getUsername());
         user.setIsAuthor(userDTO.getIsAuthor());
         user.setIsPublisher(userDTO.getIsPublisher());
+        user.setFavorite(null);
         
         return userRepository.save(user);
     }
@@ -202,5 +204,15 @@ public class RepoUserServiceImpl implements UserDetailsService{
                                                  .build();
 
         return userDTO;
+    }
+
+
+    public void saveFavorite(Integer id, FavoriteDTO favoritesDTO){
+        RepoUser user = getUserById(id);
+        Favorites favorites = favoritesService.convertFavoritesFromDTO(favoritesDTO);
+        favorites.setCreatorId(id);
+        user.setFavorite(favorites);
+        saveRawUser(user);
+
     }
 }
