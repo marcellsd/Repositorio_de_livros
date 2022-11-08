@@ -20,6 +20,9 @@ public class Author {
     @Column(length = 50)
     private String name;
 
+    @Column
+    private Integer creator;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
     @JoinTable(name = "author_book",
     joinColumns = @JoinColumn(name="author_id"),
@@ -58,5 +61,14 @@ public class Author {
     public String toString() {
         return "Author [name=" + name + ", id=" + id + "]";
     }
+
+    public Integer getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Integer creator) {
+        this.creator = creator;
+    }
+    
     
 }

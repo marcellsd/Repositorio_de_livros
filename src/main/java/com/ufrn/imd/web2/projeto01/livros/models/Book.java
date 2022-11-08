@@ -26,6 +26,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "books")
 public class Book {
+    @Column
+    private Integer creatorId;
+
     @Column(length = 100)
     private String title;
 
@@ -124,11 +127,23 @@ public class Book {
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+    
     
     @Override
     public String toString() {
         return "Book [title=" + title + ", edition=" + edition + ", id=" + id + ", isbn=" + isbn + ", numberOfPages=" + numberOfPages
                 + ", publicationDate=" + publicationDate + "]";
     }
+
+    
+    
     
 }

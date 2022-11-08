@@ -15,6 +15,7 @@ public interface AddressService {
     public InfoAddressDTO getAddressDTOById(Integer id);
     public List<Address> getAddressList();
     public List<InfoAddressDTO> getAddressDTOList();
-	public Address updateById(Integer currentAddressId, Address newAddress);
+	public Address updatePutById(Integer currentAddressId, Address updateAddress);
+	public Address updatePatchById(Integer currentAddressId, Address updateAddress);
 }
 

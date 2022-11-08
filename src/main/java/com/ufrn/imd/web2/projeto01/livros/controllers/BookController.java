@@ -1,6 +1,5 @@
 package com.ufrn.imd.web2.projeto01.livros.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.BookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
-import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
-import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
-import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
 import com.ufrn.imd.web2.projeto01.livros.services.book.BookService;
-import com.ufrn.imd.web2.projeto01.livros.services.publisher.PublisherService;
 
 
 @RestController
@@ -35,14 +30,6 @@ public class BookController {
     @Qualifier("bookServiceImpl")
     BookService bookService;
     
-    @Autowired
-    @Qualifier("publisherServiceImpl")
-    PublisherService publisherService;
-
-    @Autowired
-    @Qualifier("authorServiceImpl")
-    AuthorService authorService;
-
 
     @GetMapping
     public List<InfoBookDTO> getBookList() {
@@ -56,23 +43,8 @@ public class BookController {
 
     @PostMapping
     public InfoBookDTO saveBook(@RequestBody BookDTO bookDTO) {
-        Book book = new Book();
-        book.setTitle(bookDTO.getTitle());
-        book.setNumberOfPages(bookDTO.getNumberOfPages());
-        book.setEdition(bookDTO.getEdition());
-        book.setPublicationDate(bookDTO.getPublicationDate());
-        book.setIsbn(bookDTO.getIsbn());
-        book.setPublisher(publisherService.getPublisherById(bookDTO.getPublisherId()));
-        List<Author> authors = new ArrayList<Author>();
-        for (Integer authorId : bookDTO.getAuthorsId()) {
-            Author author = authorService.getAuthorById(authorId);
-            List<Book> books = author.getBooks();
-            books.add(book);
-            author.setBooks(books);
-            authors.add(author);
-        }
-        book.setAuthors(authors);
-        Book newBook  = bookService.saveBook(book);
+        
+        Book newBook  = bookService.saveBook(bookDTO);
         return bookService.getBookDTOById(newBook.getId());
     }
 
@@ -82,40 +54,14 @@ public class BookController {
         bookService.deleteBookById(id);
     }
 
-    @PutMapping
+    @PutMapping("{id}")
     public void updateBook(@PathVariable Integer id, @RequestBody Book updatedBook) {
-        Book oldBook = bookService.getBookById(id);
-        updatedBook.setId(oldBook.getId());
-        bookService.saveBook(updatedBook);
+        bookService.updatePutById(id, updatedBook);
     }
     
     @PatchMapping("{id}")
     public void updateBookByPatch(@PathVariable Integer id, @RequestBody BookDTO updatedBookDTO) {
-        Book oldBook = bookService.getBookById(id);
-        Book updatedBook = new Book();
-        updatedBook.setId(oldBook.getId());
-        if(updatedBookDTO.getAuthorsId() == null || updatedBookDTO.getAuthorsId().isEmpty()) {updatedBook.setAuthors(oldBook.getAuthors());}
-        else{
-            List<Author> authors = new ArrayList<Author>();
-            for (Integer authorId : updatedBookDTO.getAuthorsId()) {
-                Author author = authorService.getAuthorById(authorId);
-                if (author != null) {
-                    authors.add(author);
-                }
-            }
-            updatedBook.setAuthors(authors);
-        }
-        if(updatedBookDTO.getEdition() == null) updatedBook.setEdition(oldBook.getEdition());
-        if(updatedBookDTO.getIsbn() == null) updatedBook.setIsbn(oldBook.getIsbn());
-        if(updatedBookDTO.getNumberOfPages() == null) updatedBook.setNumberOfPages(oldBook.getNumberOfPages());
-        if(updatedBookDTO.getPublicationDate() == null) updatedBook.setPublicationDate(oldBook.getPublicationDate());
-        if(updatedBookDTO.getPublisherId() == null) {updatedBook.setPublisher(oldBook.getPublisher());}
-        else {
-            Publisher publisher = publisherService.getPublisherById(updatedBookDTO.getPublisherId());
-            if(publisher != null) updatedBook.setPublisher(publisher);
-        }
-        if(updatedBookDTO.getTitle() == null) updatedBook.setTitle(oldBook.getTitle());
-        bookService.saveBook(updatedBook);
+       bookService.updatePatchById(id, updatedBookDTO);
     }
 }
 
