@@ -29,6 +29,12 @@ public class Author {
     inverseJoinColumns = @JoinColumn(name="book_id"))
     private List<Book> books;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="favorite_authors",
+    joinColumns = @JoinColumn(name="author_id"),
+    inverseJoinColumns = @JoinColumn(name="favorite_id"))
+    private List<Favorites> favorites;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

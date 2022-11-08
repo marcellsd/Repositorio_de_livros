@@ -46,7 +46,7 @@ public class SecurityConfig {
                             .hasRole("AUTHOR")    
                         .antMatchers("/api/book/**")
                             .hasAnyRole("AUTHOR", "PUBLISHER")    
-                        .antMatchers("/api/user/**")
+                        .antMatchers(HttpMethod.POST, "/api/user/**")
                              .permitAll()
                         .anyRequest().authenticated()   
                     .and() 

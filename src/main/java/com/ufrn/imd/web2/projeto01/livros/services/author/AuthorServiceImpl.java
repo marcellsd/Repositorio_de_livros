@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.AuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
@@ -62,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
         
         return authorRepository.findById(id).map(author -> {
             return author;
-        }).orElseThrow();
+        }).orElseThrow(() -> new NotFoundException("Author not found"));
     }
 
     @Override
@@ -178,7 +176,7 @@ public class AuthorServiceImpl implements AuthorService {
         return authorDTOs;
     }
 
-    private List<InfoBookAuthorDTO> bookToBookDTO(List<Book> books){
+    public List<InfoBookAuthorDTO> bookToBookDTO(List<Book> books){
         if (books!=null){
             List<InfoBookAuthorDTO> booksDTO = new ArrayList<InfoBookAuthorDTO>();
 

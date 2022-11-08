@@ -54,6 +54,12 @@ public class Book {
     inverseJoinColumns = @JoinColumn(name="author_id"))
     private List<Author> authors;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="favorite_books",
+    joinColumns = @JoinColumn(name="book_id"),
+    inverseJoinColumns = @JoinColumn(name="favorite_id"))
+    private List<Favorites> favorites;
+
     @ManyToOne
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;

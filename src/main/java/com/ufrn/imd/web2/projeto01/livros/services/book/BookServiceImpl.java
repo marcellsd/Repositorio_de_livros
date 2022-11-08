@@ -205,7 +205,7 @@ public class BookServiceImpl implements BookService{
     }
 
     
-    private List<InfoAuthorBookDTO> authorToAuthorDTO(List<Author> authors){
+    public List<InfoAuthorBookDTO> authorToAuthorDTO(List<Author> authors){
         if (authors!=null){
             List<InfoAuthorBookDTO> authorsDTO = new ArrayList<InfoAuthorBookDTO>();
 
