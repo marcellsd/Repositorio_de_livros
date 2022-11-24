@@ -4,91 +4,65 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.ufrn.imd.web2.projeto01.livros.dtos.AuthorDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
-@Controller
-@RequestMapping("/author")
+
+@RestController
+@RequestMapping("/api/author")
 public class AuthorController {
 
     @Autowired
     @Qualifier("authorServiceImpl")
     AuthorService authorService;
-    Integer currentAuthorId = null;
 
-    @RequestMapping("/getAuthorsList")
-    public String showListaCursos(Model model){
-        List<Author> authors = authorService.getAuthorsList();
-        model.addAttribute("authors",authors);
-        return "author/authorList";
+
+    @GetMapping()
+    public List<InfoAuthorDTO> showAuthorList(){
+       return authorService.getAuthorsDTOList();
     }
 
-    @RequestMapping("/showFormAuthor")
-    public String showFormCurso(Model model){
-        model.addAttribute("author", new Author());
-        return "author/formAuthor";
+    @PostMapping
+    public InfoAuthorDTO saveAuthor(@RequestBody AuthorDTO authorDTO) {
+        Author newAuthor = authorService.saveAuthor(authorDTO);
+        return authorService.getAuthorDTOById(newAuthor.getId());
     }
 
-    // @GetMapping("/getAuthorById/{id}")
-    // public String showAuthorDetails(@PathVariable(name = "id") Integer id, Model model) {
-    //     Author author = authorService.getAuthorById(id);
-    //     model.addAttribute("author", author);
-    //     return "author/authorPage";
-    // }
-
-    @RequestMapping("/addAuthor")
-    public String addAuthor(@ModelAttribute("author") Author author, Model model){
-        Author newAuthor = authorService.saveAuthor(author);
-        model.addAttribute("author", newAuthor);
-        return "redirect:getAuthorsList";
-    }
     
-    // @RequestMapping("/deleteAuthor/{authorId}")
-    // public String deleteAuthor(@PathVariable String authorId, Model model){
-    //     Integer id = Integer.parseInt(authorId);
-    //     Author author =  authorService.getAuthorById(id);
-    //     authorService.deleteAuthorById(id);
-    //     model.addAttribute("author",author);
-    //     return "author/deleteAuthorPage";
-    // }
-    
-    @GetMapping("/deleteAuthor")
-    public String deleteAuthor(@RequestParam(name = "id") Integer id, Model model){
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAuthorById(@PathVariable Integer id) {
         authorService.deleteAuthorById(id);
-        return "redirect:getAuthorsList";
     }
 
-    @RequestMapping("/getAuthorByID/{authorId}")
-    public String getAuthorByID(@PathVariable String authorId, Model model){
-        Integer id = Integer.parseInt(authorId);
-        Author author =  authorService.getAuthorById(id);
-        model.addAttribute("author", author);
-        return "author/authorPage";
+    @GetMapping("{id}")
+    public InfoAuthorDTO getAuthorByid(@PathVariable Integer id) {
+        return authorService.getAuthorDTOById(id);
     }
     
-    @RequestMapping("/showFormAuthorUpdate/{authorId}")
-    public String showFormAuthorUpdate(@PathVariable String authorId, @ModelAttribute("author") Author author, Model model){
-        Integer id = Integer.parseInt(authorId);
-        this.currentAuthorId = id;
-        author =  authorService.getAuthorById(id);
-        model.addAttribute("author", author);
-        System.out.println(author);
-        return "author/formUpdateAuthor";
+    @PutMapping("{id}")
+    public void updateAuthor(@PathVariable Integer id, @RequestBody Author updatedAuthor) {
+        Author oldAuthor = authorService.getAuthorById(id);
+        updatedAuthor.setId(oldAuthor.getId());
+        authorService.updatePutById( id ,updatedAuthor);
     }
 
-    @RequestMapping("/updateAuthor")
-    public String updateAuthor(@ModelAttribute("author") Author newAuthor, Model model){
-        Author author = authorService.updateById(currentAuthorId,newAuthor);
-        System.out.println(author);
-        model.addAttribute("AuthorAtualizado", author);
-        this.currentAuthorId = null;
-        return "redirect:getAuthorsList";
+    @PatchMapping("{id}")
+    public void updateAuthorByPatch(@PathVariable Integer id, @RequestBody AuthorDTO updateAuthorDTO) {
+        authorService.updatePatchById(id, updateAuthorDTO);
     }
 }

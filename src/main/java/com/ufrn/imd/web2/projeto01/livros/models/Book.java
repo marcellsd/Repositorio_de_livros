@@ -26,6 +26,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "books")
 public class Book {
+    @Column
+    private Integer creatorId;
+
     @Column(length = 100)
     private String title;
 
@@ -50,6 +53,12 @@ public class Book {
     joinColumns = @JoinColumn(name="book_id"),
     inverseJoinColumns = @JoinColumn(name="author_id"))
     private List<Author> authors;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE})
+    @JoinTable(name="favorite_books",
+    joinColumns = @JoinColumn(name="book_id"),
+    inverseJoinColumns = @JoinColumn(name="favorite_id"))
+    private List<Favorites> favorites;
 
     @ManyToOne
     @JoinColumn(name = "publisher_id")
@@ -124,11 +133,23 @@ public class Book {
     public void setPublisher(Publisher publisher) {
         this.publisher = publisher;
     }
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
+    }
+    
     
     @Override
     public String toString() {
         return "Book [title=" + title + ", edition=" + edition + ", id=" + id + ", isbn=" + isbn + ", numberOfPages=" + numberOfPages
                 + ", publicationDate=" + publicationDate + "]";
     }
+
+    
+    
     
 }
