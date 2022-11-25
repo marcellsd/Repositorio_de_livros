@@ -36,7 +36,18 @@ class AuthorMenuScreen extends StatelessWidget {
               ),
               TextButton(
                 style: TextButton.styleFrom(backgroundColor: Colors.green),
-                onPressed: () {},
+                onPressed: () => Navigator.of(context)
+                    .pushNamed("/author-form-screen", arguments: false)
+                    .then((result) {
+                  var _result = result as bool;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(_result
+                          ? "Author adicionado com sucesso!"
+                          : "Problema a cadastrar o author"),
+                    ),
+                  );
+                }),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
@@ -51,7 +62,8 @@ class AuthorMenuScreen extends StatelessWidget {
               ),
               TextButton(
                 style: TextButton.styleFrom(backgroundColor: Colors.blue),
-                onPressed: () {},
+                onPressed: () => Navigator.of(context)
+                    .pushNamed("/author-form-screen", arguments: true),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 2, horizontal: 10),

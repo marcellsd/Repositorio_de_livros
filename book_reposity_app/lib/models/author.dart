@@ -3,11 +3,9 @@ import 'book_model.dart';
 class Author {
   String id;
   String name;
-  List<Book>? books;
+  List<Book> books;
 
-  Author(this.id, this.name, [this.books]);
-
-  Map<String, String> toJson() => {"name": name};
+  Author(this.id, this.name, this.books);
 
   factory Author.fromJson(Map json) {
     List<Book> booksList = [];
@@ -16,5 +14,9 @@ class Author {
           json["books"].map((book) => Book.fromJson(book)).toList());
     }
     return Author(json["id"].toString(), json["name"], booksList);
+  }
+
+  Map<String, dynamic> toJson(String authorName, List<int> booksId) {
+    return {"name": authorName, "booksId": booksId};
   }
 }

@@ -28,81 +28,83 @@ class HomeScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              InkWell(
-                onTap: () =>
-                    Navigator.of(context).pushNamed("/author-menu-screen"),
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    "Autor",
-                    style: Theme.of(context).textTheme.headline3,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              InkWell(
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.purple,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    "Livro",
-                    style: Theme.of(context).textTheme.headline3,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                InkWell(
+                  onTap: () =>
+                      Navigator.of(context).pushNamed("/author-menu-screen"),
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.orange,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "Autor",
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              InkWell(
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    "Editora",
-                    style: Theme.of(context).textTheme.headline3,
+                const SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.purple,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "Livro",
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              InkWell(
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Text(
-                    "Livraria",
-                    style: Theme.of(context).textTheme.headline3,
+                const SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "Editora",
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
                   ),
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 30,
+                ),
+                InkWell(
+                  child: Container(
+                    alignment: Alignment.center,
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      "Livraria",
+                      style: Theme.of(context).textTheme.headline3,
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

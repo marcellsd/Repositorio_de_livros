@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'views/author/author_form.dart';
 import 'views/author/author_menu_screen.dart';
 import 'views/author/authors_list_screen.dart';
 import 'views/splash_screen.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
         "/home-screen": (context) => const HomeScreen(),
         "/auth-screen": (context) => AuthScreen(),
         "/authors-list-screen": (context) => const AuthorsListScreen(),
-        "/author-menu-screen": (context) => const AuthorMenuScreen()
+        "/author-menu-screen": (context) => const AuthorMenuScreen(),
+        "/author-form-screen": (context) => AuthorForm()
       },
     );
   }
