@@ -33,7 +33,7 @@ class AuthorsProvider extends ChangeNotifier {
         var authorsData = jsonDecode(response.body) as List;
         List<Author> authorsList = [];
         for (var author in authorsData) {
-          var newAuthor = Author(author["name"]);
+          var newAuthor = Author.fromJson(author);
           authorsList.add(newAuthor);
         }
         return authorsList;

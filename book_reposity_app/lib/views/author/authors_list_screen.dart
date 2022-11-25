@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/author.dart';
-import '../providers/authors_provider.dart';
-import '../widgets/author_item.dart';
+import '../../models/author.dart';
+import '../../providers/authors_provider.dart';
+import '../../widgets/author/author_item.dart';
 
-class AuthorsScreen extends StatefulWidget {
-  const AuthorsScreen({super.key});
+class AuthorsListScreen extends StatefulWidget {
+  const AuthorsListScreen({super.key});
 
   @override
-  State<AuthorsScreen> createState() => _AuthorsScreenState();
+  State<AuthorsListScreen> createState() => _AuthorsListScreenState();
 }
 
-class _AuthorsScreenState extends State<AuthorsScreen> {
+class _AuthorsListScreenState extends State<AuthorsListScreen> {
   late Future<List<Author>> _authorsFuture;
   @override
   void initState() {

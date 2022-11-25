@@ -1,12 +1,13 @@
-import 'package:book_reposity_app/views/auth_screen.dart';
-import 'package:book_reposity_app/views/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'views/author/author_menu_screen.dart';
+import 'views/author/authors_list_screen.dart';
+import 'views/splash_screen.dart';
+import 'views/auth/auth_screen.dart';
 import 'providers/auth_provider.dart';
 import 'providers/authors_provider.dart';
-import 'views/authors_screen.dart';
-import 'views/homescreen.dart';
+import 'views/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +43,8 @@ class MyApp extends StatelessWidget {
       routes: {
         "/home-screen": (context) => const HomeScreen(),
         "/auth-screen": (context) => AuthScreen(),
-        "/authors-screen": (context) => const AuthorsScreen()
+        "/authors-list-screen": (context) => const AuthorsListScreen(),
+        "/author-menu-screen": (context) => const AuthorMenuScreen()
       },
     );
   }
