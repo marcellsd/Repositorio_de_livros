@@ -21,6 +21,9 @@ public class Publisher {
     @Column(length = 50)
     private String name;
 
+    @Column
+    private Integer creatorId;
+
     @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
     private List<Book> books;
 
@@ -36,7 +39,7 @@ public class Publisher {
         
     }
 
-
+    
     public Publisher(String name) {
         this.name = name;
     }
@@ -76,6 +79,16 @@ public class Publisher {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+
+    public Integer getCreatorId() {
+        return creatorId;
+    }
+
+
+    public void setCreatorId(Integer creatorId) {
+        this.creatorId = creatorId;
     }
     
     
