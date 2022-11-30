@@ -43,7 +43,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) {
+    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) throws Exception {
         return userService.saveUser(userDTO);
     }
 

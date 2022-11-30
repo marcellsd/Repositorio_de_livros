@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class InfoNoFavoritesRepoUserDTO {
+    private Integer id;
     private String username;
     private Boolean isAuthor;
     private Boolean isPublisher;
