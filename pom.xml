@@ -9,8 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.ufrn.imd.web2.projeto01</groupId>
-	<artifactId>livros</artifactId>
+	<artifactId>books_repo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
 	<name>livros</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -98,6 +99,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

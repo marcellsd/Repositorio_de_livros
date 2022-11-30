@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.CredentialsDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoNoFavoritesRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.TokenDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.SenhaInvalidaException;
@@ -42,7 +43,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) {
+    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) throws Exception {
         return userService.saveUser(userDTO);
     }
 
@@ -81,5 +82,9 @@ public class UserController {
         return userService.getFavoritesDTO(id);
     }
    
+    @GetMapping("getByUsername")
+    public InfoNoFavoritesRepoUserDTO getUserByUsername(@RequestBody String username){
+        return userService.getRepoUserByUsername(username);
+    }
 
 }
