@@ -22,6 +22,7 @@ import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoFavoritesDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoNoFavoritesRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoPublisherBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.NotFoundException;
@@ -157,38 +158,43 @@ public class RepoUserServiceImpl implements UserDetailsService{
 
         List<Book> userFavoriteBooks = user.getFavorite().getFavoriteBooks();
         List<Author> userFavoriteAuthors = user.getFavorite().getFavoriteAuthors();
-
+        
         List<InfoBookDTO> bookDTOs = new ArrayList<InfoBookDTO>();
-        for (Book book : userFavoriteBooks) {
-            List<InfoAuthorBookDTO> authorsDTO = bookService.authorToAuthorDTO(book.getAuthors());
-            InfoBookDTO bookDTO = InfoBookDTO.builder()
-                                .id(book.getId())
-                                .title(book.getTitle())
-                                .numberOfPages(book.getNumberOfPages())
-                                .edition(book.getEdition())
-                                .publicationDate(book.getPublicationDate())
-                                .isbn(book.getIsbn())
-                                .authors(authorsDTO)
-                                .publisher(InfoPublisherBookDTO.builder()
-                                                                .id(book.getPublisher().getId())
-                                                                .name(book.getPublisher().getName())
-                                                                .build())
-                                .build();
-            bookDTOs.add(bookDTO);            
+        if (userFavoriteBooks.size()>0){
+            for (Book book : userFavoriteBooks) {
+                List<InfoAuthorBookDTO> authorsDTO = bookService.authorToAuthorDTO(book.getAuthors());
+                InfoBookDTO bookDTO = InfoBookDTO.builder()
+                                    .id(book.getId())
+                                    .title(book.getTitle())
+                                    .numberOfPages(book.getNumberOfPages())
+                                    .edition(book.getEdition())
+                                    .publicationDate(book.getPublicationDate())
+                                    .isbn(book.getIsbn())
+                                    .authors(authorsDTO)
+                                    .publisher(InfoPublisherBookDTO.builder()
+                                                                    .id(book.getPublisher().getId())
+                                                                    .name(book.getPublisher().getName())
+                                                                    .build())
+                                    .build();
+                bookDTOs.add(bookDTO);            
+            }
+        } else{
+            userFavoriteBooks.add(new Book());
         }
-
         List<InfoAuthorDTO> authorDTOs = new ArrayList<InfoAuthorDTO>();
-
-        for (Author author : userFavoriteAuthors) {
-            List<InfoBookAuthorDTO> booksDTO = authorService.bookToBookDTO(author.getBooks());
-            InfoAuthorDTO authorDTO = InfoAuthorDTO.builder()
-                                      .id(author.getId())
-                                      .name(author.getName())
-                                      .books(booksDTO).build();
-            
-            authorDTOs.add(authorDTO);
+        if (userFavoriteAuthors.size()>0){
+            for (Author author : userFavoriteAuthors) {
+                List<InfoBookAuthorDTO> booksDTO = authorService.bookToBookDTO(author.getBooks());
+                InfoAuthorDTO authorDTO = InfoAuthorDTO.builder()
+                                        .id(author.getId())
+                                        .name(author.getName())
+                                        .books(booksDTO).build();
+                
+                authorDTOs.add(authorDTO);
+            }
+        } else{
+            userFavoriteAuthors.add(new Author());
         }
-
 
         InfoFavoritesDTO favoriteDTO = InfoFavoritesDTO.builder()
                                                        .books(bookDTOs)
@@ -214,5 +220,15 @@ public class RepoUserServiceImpl implements UserDetailsService{
         user.setFavorite(favorites);
         saveRawUser(user);
 
+    }
+
+    public InfoNoFavoritesRepoUserDTO getRepoUserByUsername(String username){
+        RepoUser user = userRepository.findByUsername(username).
+        orElseThrow(() -> new NotFoundException("User not found"));
+        return InfoNoFavoritesRepoUserDTO.builder()
+                                          .username(user.getUsername())
+                                          .isAuthor(user.getIsAuthor())
+                                          .isPublisher(user.getIsPublisher())
+                                          .build();
     }
 }

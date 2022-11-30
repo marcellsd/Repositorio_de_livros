@@ -29,7 +29,7 @@ public class JwtService {
 
     public String generateToken( RepoUser repoUser ){
         long expString = Long.valueOf(expiracao);
-        LocalDateTime dateHourExpiration = LocalDateTime.now().plusMinutes(expString);
+        LocalDateTime dateHourExpiration = LocalDateTime.now().plusYears(expString);
         Instant instant = dateHourExpiration.atZone(ZoneId.systemDefault()).toInstant(); 
         Date date = Date.from(instant); 
 
