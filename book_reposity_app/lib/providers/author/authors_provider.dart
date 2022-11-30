@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import '../models/author.dart';
+import '../../models/author.dart';
 
 class AuthorsProvider extends ChangeNotifier {
   final List<Author> _authors = [];
@@ -14,7 +14,7 @@ class AuthorsProvider extends ChangeNotifier {
 
   String? _token;
 
-  Future<List<Author>> getAuthors() async {
+  Future<void> getAuthors() async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
     if (user != null) {
@@ -31,15 +31,13 @@ class AuthorsProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         var authorsData = jsonDecode(response.body) as List;
-        List<Author> authorsList = [];
+        _authors.clear();
         for (var author in authorsData) {
           var newAuthor = Author.fromJson(author);
-          authorsList.add(newAuthor);
+          _authors.add(newAuthor);
         }
-        return authorsList;
-      } else {
-        return [];
       }
+      notifyListeners();
     } catch (e) {
       rethrow;
     }
@@ -68,7 +66,7 @@ class AuthorsProvider extends ChangeNotifier {
         'Authorization': 'Bearer $_token',
       },
       body: jsonEncode(
-        author.toJson(author.name, bookIds),
+        author.toJson(bookIds),
       ),
     );
 
@@ -80,8 +78,8 @@ class AuthorsProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> removeAuthor(String id) async {
-    final response = await http.post(Uri.parse("$baseUrl/id"), headers: {
+  Future<void> removeAuthor(String id) async {
+    final response = await http.delete(Uri.parse("$baseUrl/$id"), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -90,9 +88,6 @@ class AuthorsProvider extends ChangeNotifier {
     if (response.statusCode == 204) {
       _authors.removeWhere((author) => author.id == id);
       notifyListeners();
-      return true;
     }
-
-    return false;
   }
 }

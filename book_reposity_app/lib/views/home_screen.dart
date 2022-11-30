@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         child: Center(
           child: SingleChildScrollView(
             child: Column(
@@ -37,69 +37,71 @@ class HomeScreen extends StatelessWidget {
                       Navigator.of(context).pushNamed("/author-menu-screen"),
                   child: Container(
                     alignment: Alignment.center,
-                    height: 150,
-                    width: 150,
+                    height: 160,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.orange,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Text(
                       "Autor",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 InkWell(
+                  onTap: () =>
+                      Navigator.of(context).pushNamed("/book-menu-screen"),
                   child: Container(
                     alignment: Alignment.center,
-                    height: 150,
-                    width: 150,
+                    height: 160,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.purple,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Text(
                       "Livro",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 InkWell(
                   child: Container(
                     alignment: Alignment.center,
-                    height: 150,
-                    width: 150,
+                    height: 160,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.blue,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Text(
                       "Editora",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 InkWell(
                   child: Container(
                     alignment: Alignment.center,
-                    height: 150,
-                    width: 150,
+                    height: 160,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Colors.green,
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Text(
                       "Livraria",
-                      style: Theme.of(context).textTheme.headline3,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                   ),
                 )

@@ -2,7 +2,7 @@ import 'package:book_reposity_app/models/author.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/authors_provider.dart';
+import '../../providers/author/authors_provider.dart';
 
 class AuthorForm extends StatefulWidget {
   @override

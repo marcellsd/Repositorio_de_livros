@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class AuthorMenuScreen extends StatelessWidget {
-  const AuthorMenuScreen({super.key});
+class BookMenuScreen extends StatelessWidget {
+  const BookMenuScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Módulo Autor",
+          "Módulo livro",
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
       ),
@@ -25,12 +25,12 @@ class AuthorMenuScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15))),
                 onPressed: () =>
-                    Navigator.of(context).pushNamed("/authors-list-screen"),
+                    Navigator.of(context).pushNamed("/books-list-screen"),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                   child: Text(
-                    "Lista autores",
+                    "Lista livros",
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ),
@@ -49,7 +49,7 @@ class AuthorMenuScreen extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                   child: Text(
-                    "Buscar autor",
+                    "Buscar livro",
                     style: Theme.of(context).textTheme.headline5,
                   ),
                 ),

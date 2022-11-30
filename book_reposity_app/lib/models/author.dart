@@ -16,7 +16,7 @@ class Author {
     return Author(json["id"].toString(), json["name"], booksList);
   }
 
-  Map<String, dynamic> toJson(String authorName, List<int> booksId) {
-    return {"name": authorName, "booksId": booksId};
+  Map<String, dynamic> toJson(List<int> booksId) {
+    return {"name": name, "booksId": booksId};
   }
 }
