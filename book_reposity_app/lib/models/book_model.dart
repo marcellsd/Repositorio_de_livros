@@ -9,7 +9,7 @@ class Book {
   DateTime publicationDate;
   String isbn;
   List<Author> authors;
-  Publisher publisher;
+  Publisher? publisher;
 
   Book(
       {required this.id,
@@ -19,7 +19,7 @@ class Book {
       required this.publicationDate,
       required this.isbn,
       required this.authors,
-      required this.publisher});
+      this.publisher});
 
   factory Book.fromJson(Map json) {
     List<Author> authorsList = [];
@@ -27,15 +27,20 @@ class Book {
       authorsList = List<Author>.from(
           json["authors"].map((author) => Author.fromJson(author)).toList());
     }
+
+    Publisher? newPublisher;
+    if (json["publisher"] != null) {
+      newPublisher = Publisher.fromJson(json["publisher"]);
+    }
     return Book(
         id: json["id"].toString(),
         title: json["title"],
-        numberOfPages: int.parse(json["numberOfPages"]),
-        edition: int.parse(json["edition"]),
-        publicationDate: DateTime.parse(json["publicationDate"].toString()),
+        numberOfPages: json["numberOfPages"],
+        edition: json["edition"],
+        publicationDate: DateTime.parse(json["publicationDate"]),
         isbn: json["isbn"],
         authors: authorsList,
-        publisher: json["publisher"]);
+        publisher: newPublisher);
   }
 
   Map<String, dynamic> toJson(List<int> authorsId, int publisherId) {
@@ -44,7 +49,7 @@ class Book {
       "numberOfPages": numberOfPages,
       "edition": edition,
       "isbn": isbn,
-      "publicationDate": publicationDate,
+      "publicationDate": publicationDate.toIso8601String(),
       "authorsId": authorsId,
       "publisherId": publisherId
     };

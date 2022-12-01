@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/author/authors_provider.dart';
 import '../../providers/book/books_provider.dart';
 import '../../providers/publisher/publishers_provider.dart';
-import '../../widgets/book/book_item.dart';
+import '../../widgets/publisher/publisher_item.dart';
 
-class BooksListScreen extends StatefulWidget {
-  const BooksListScreen({super.key});
+class PublishersListScreen extends StatefulWidget {
+  const PublishersListScreen({super.key});
 
   @override
-  State<BooksListScreen> createState() => _BooksListScreenState();
+  State<PublishersListScreen> createState() => _PublishersListScreenState();
 }
 
-class _BooksListScreenState extends State<BooksListScreen> {
+class _PublishersListScreenState extends State<PublishersListScreen> {
   bool _isLoading = true;
 
   @override
@@ -22,7 +21,6 @@ class _BooksListScreenState extends State<BooksListScreen> {
     Future.wait([
       Future.delayed(const Duration(seconds: 1)),
     ]).then((_) {
-      Provider.of<AuthorsProvider>(context, listen: false).getAuthors();
       Provider.of<PublishersProvider>(context, listen: false).getPublishers();
       Provider.of<BooksProvider>(context, listen: false).getBooks().then((_) {
         setState(() {
@@ -34,15 +32,15 @@ class _BooksListScreenState extends State<BooksListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var booksProvider = context.watch<BooksProvider>();
+    var publishersProvider = context.watch<PublishersProvider>();
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Livros",
+          title: const Text("Editoras",
               style: TextStyle(color: Colors.white, fontSize: 18)),
           actions: [
             IconButton(
                 onPressed: () => Navigator.of(context)
-                    .pushNamed("/book-form-screen", arguments: false),
+                    .pushNamed("/publisher-form-screen", arguments: false),
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -52,12 +50,12 @@ class _BooksListScreenState extends State<BooksListScreen> {
               )
             : Padding(
                 padding: const EdgeInsets.all(10),
-                child: booksProvider.books.isNotEmpty
+                child: publishersProvider.publishers.isNotEmpty
                     ? ListView.separated(
                         separatorBuilder: ((context, index) => const Divider(
                               height: 10,
                             )),
-                        itemCount: booksProvider.books.length,
+                        itemCount: publishersProvider.publishers.length,
                         itemBuilder: ((context, index) => GestureDetector(
                             onTap: () => showModalBottomSheet(
                                 isScrollControlled: true,
@@ -90,13 +88,16 @@ class _BooksListScreenState extends State<BooksListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () => Provider.of<
-                                                      BooksProvider>(context,
-                                                  listen: false)
-                                              .removeBook(
-                                                  booksProvider.books[index].id)
-                                              .then((_) =>
-                                                  Navigator.of(context).pop()),
+                                          onPressed: () =>
+                                              Provider.of<PublishersProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .removePublisher(
+                                                      publishersProvider
+                                                          .publishers[index].id)
+                                                  .then((_) =>
+                                                      Navigator.of(context)
+                                                          .pop()),
                                           child: const Text(
                                             "Deletar",
                                             style: TextStyle(
@@ -109,11 +110,12 @@ class _BooksListScreenState extends State<BooksListScreen> {
                                     ),
                                   );
                                 })),
-                            child: BookItem(booksProvider.books[index]))),
+                            child: PublisherItem(
+                                publishersProvider.publishers[index]))),
                       )
                     : const Center(
                         child: Text(
-                          "Nenhum livro cadastrado!",
+                          "Nenhuma editora cadastrada!",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 30,

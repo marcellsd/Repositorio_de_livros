@@ -35,6 +35,7 @@ class BooksProvider extends ChangeNotifier {
           var newBook = Book.fromJson(book);
           _books.add(newBook);
         }
+        notifyListeners();
       }
     } catch (error) {
       rethrow;
@@ -63,13 +64,13 @@ class BooksProvider extends ChangeNotifier {
         'Authorization': 'Bearer $_token',
       },
       body: jsonEncode(
-        book.toJson(authorsId, int.parse(book.publisher.id)),
+        book.toJson(authorsId, int.parse(book.publisher!.id)),
       ),
     );
 
     if (response.statusCode == 200) {
       final bookData = jsonDecode(response.body);
-      book.id = bookData["id"];
+      book.id = bookData["id"].toString();
       _books.add(book);
       notifyListeners();
     }

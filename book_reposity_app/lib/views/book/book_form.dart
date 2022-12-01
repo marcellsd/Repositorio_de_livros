@@ -270,7 +270,7 @@ class _BookFormState extends State<BookForm> {
                     Container(
                       padding: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 10),
-                      height: 130,
+                      height: 120,
                       child: ListView.builder(
                         itemCount: authorsProvider.authors.length,
                         itemBuilder: ((context, index) => ListTile(
@@ -319,8 +319,12 @@ class _BookFormState extends State<BookForm> {
                         itemCount: publishersProvider.publishers.length,
                         itemBuilder: ((context, index) => ListTile(
                             selected: _selectedPublisherIndex == index,
-                            title:
-                                Text(publishersProvider.publishers[index].name),
+                            title: Text(
+                              publishersProvider.publishers[index].name,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 14),
+                            ),
+                            selectedTileColor: Colors.blue,
                             onTap: () {
                               setState(() {
                                 if (_selectedPublisher !=

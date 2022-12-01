@@ -9,6 +9,9 @@ import 'views/author/author_menu_screen.dart';
 import 'views/author/authors_list_screen.dart';
 import 'views/book/book_menu_screen.dart';
 import 'views/book/books_list_screen.dart';
+import 'views/publisher/publisher_form.dart';
+import 'views/publisher/publisher_menu_screen.dart';
+import 'views/publisher/publishers_list_screen.dart';
 import 'views/splash_screen.dart';
 import 'views/auth/auth_screen.dart';
 import 'providers/auth_provider.dart';
@@ -56,7 +59,10 @@ class MyApp extends StatelessWidget {
         "/author-form-screen": (context) => AuthorForm(),
         "/book-menu-screen": (context) => const BookMenuScreen(),
         "/books-list-screen": (context) => const BooksListScreen(),
-        "/book-form-screen": (context) => const BookForm()
+        "/book-form-screen": (context) => const BookForm(),
+        "/publisher-menu-screen": (context) => const PublisherMenuScreen(),
+        "/publishers-list-screen": (context) => const PublishersListScreen(),
+        "/publisher-form-screen": (context) => const PublisherForm()
       },
     );
   }
