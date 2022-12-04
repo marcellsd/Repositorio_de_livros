@@ -38,14 +38,19 @@ public class SecurityConfig {
             .authorizeHttpRequests((authz) -> {
                 try {
                     authz
-                        .antMatchers(HttpMethod.GET,"/api/book/**", "/api/publisher/**", "/api/author/**", "/api/address/**") 
-                            .hasAnyRole("USER","PUBLISHER","AUTHOR")
+                        .antMatchers(HttpMethod.GET,"/api/book/**", "/api/publisher/**", "/api/author/**", 
+                                                    "/api/address/**","/api/product/**","/api/bookstore/**") 
+                            .hasAnyRole("USER","PUBLISHER","AUTHOR", "BOOKSTORE")
                         .antMatchers("/api/publisher/**")
                             .hasRole("PUBLISHER")
                         .antMatchers("/api/author/**")
                             .hasRole("AUTHOR")    
                         .antMatchers("/api/book/**")
-                            .hasAnyRole("AUTHOR", "PUBLISHER")    
+                            .hasAnyRole("AUTHOR", "PUBLISHER")
+                        .antMatchers("/api/bookstore/**")
+                            .hasRole("BOOKSTORE")
+                        .antMatchers("/api/product/**")
+                            .hasRole("BOOKSTORE")
                         .antMatchers(HttpMethod.POST, "/api/user/**")
                              .permitAll()
                         .anyRequest().authenticated()   
@@ -57,15 +62,8 @@ public class SecurityConfig {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }
-                
-                 
+            }   
             );
-            //.formLogin();
-            //.httpBasic(); //possibilita "logar" com o headers de autenticação
-            
-             //formulario de login customizado
-            //.httpBasic(withDefaults());
         return http.build();
     }
 

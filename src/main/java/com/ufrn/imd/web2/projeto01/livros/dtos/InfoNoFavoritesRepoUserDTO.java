@@ -14,4 +14,5 @@ public class InfoNoFavoritesRepoUserDTO {
     private String username;
     private Boolean isAuthor;
     private Boolean isPublisher;
+    private Boolean isBookstore;
 }
