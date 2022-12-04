@@ -13,4 +13,5 @@ public class InfoProductDTO {
     private InfoBookDTO book;
     private Integer quantity;
     private Float price;
+    private InfoBookstoreDTO bookstore;
 }

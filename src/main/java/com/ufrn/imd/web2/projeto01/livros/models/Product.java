@@ -2,7 +2,9 @@ package com.ufrn.imd.web2.projeto01.livros.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -12,13 +14,13 @@ import javax.persistence.Table;
 @Table(name="product")
 public class Product {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
     @Column
     private Integer creator;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="book_id")
     private Book book;
     
@@ -27,6 +29,10 @@ public class Product {
 
     @Column
     private Float price;
+
+    @ManyToOne
+    @JoinColumn(name = "bookstore_id")
+    private Bookstore bookstore;
 
     public Integer getId() {
         return id;
@@ -68,10 +74,18 @@ public class Product {
         this.price = price;
     }
 
+    public Bookstore getBookstore() {
+        return bookstore;
+    }
+
+    public void setBookstore(Bookstore bookstore) {
+        this.bookstore = bookstore;
+    }
+
     @Override
     public String toString() {
-        return "Product [id=" + id + ", creatorId=" + creator + ", book=" + book + ", quantity=" + quantity
-                + ", price=" + price + "]";
+        return "Product [id=" + id + ", creator=" + creator + ", book=" + book + ", quantity=" + quantity + ", price="
+                + price + ", bookstore=" + bookstore + "]";
     }
 
 }

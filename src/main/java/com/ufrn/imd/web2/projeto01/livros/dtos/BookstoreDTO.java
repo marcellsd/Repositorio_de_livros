@@ -9,9 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductDTO {
-    private Integer bookId;
-    private Integer quantity;
-    private Float price;
-    private Integer bookstoreId;
+public class BookstoreDTO {
+    private String name;
 }
