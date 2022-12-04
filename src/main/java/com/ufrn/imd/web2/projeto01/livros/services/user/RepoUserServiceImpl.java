@@ -71,6 +71,7 @@ public class RepoUserServiceImpl implements UserDetailsService{
                 user.setUsername(userDTO.getUsername());
                 user.setIsAuthor(userDTO.getIsAuthor());
                 user.setIsPublisher(userDTO.getIsPublisher());
+                user.setIsBookstore(userDTO.getIsBookstore());
                 user.setFavorite(null);
                 return userRepository.save(user);
             }
@@ -113,6 +114,11 @@ public class RepoUserServiceImpl implements UserDetailsService{
        else{
         updatedUser.setIsPublisher(updatedUserDTO.getIsPublisher());
        }
+       if(updatedUserDTO.getIsBookstore() == null) 
+       { updatedUser.setIsBookstore(user.getIsBookstore());}
+       else{
+        updatedUser.setIsBookstore(updatedUserDTO.getIsBookstore());
+       }
         if(updatedUserDTO.getPassword() == null) {user.setPassword(user.getPassword());}
         else {
             updatedUser.setPassword(passwordEncoder.encode(updatedUserDTO.getPassword()));
@@ -151,6 +157,7 @@ public class RepoUserServiceImpl implements UserDetailsService{
         String[] roles = {"USER"};
         if (user.getIsAuthor()) {roles = new String[] {"AUTHOR","USER"};}
         else if (user.getIsPublisher()) {roles = new String[] {"PUBLISHER","USER"};}
+        else if (user.getIsBookstore()) {roles = new String[] {"BOOKSTORE","USER"};}
 
         return User.builder().username(user.getUsername())
                              .password(user.getPassword())
@@ -208,6 +215,7 @@ public class RepoUserServiceImpl implements UserDetailsService{
                                                      .password(user.getPassword())
                                                      .isAuthor(user.getIsAuthor())
                                                      .isPublisher(user.getIsPublisher())
+                                                     .isBookstore(user.getIsBookstore())
                                                      .favorite(favoriteDTO)
                                                      .build();
             return userDTO;
@@ -217,6 +225,7 @@ public class RepoUserServiceImpl implements UserDetailsService{
                                                  .password(user.getPassword())
                                                  .isAuthor(user.getIsAuthor())
                                                  .isPublisher(user.getIsPublisher())
+                                                 .isBookstore(user.getIsBookstore())
                                                  .build();
             return userDTO;
         }
@@ -243,6 +252,7 @@ public class RepoUserServiceImpl implements UserDetailsService{
                                           .username(user.getUsername())
                                           .isAuthor(user.getIsAuthor())
                                           .isPublisher(user.getIsPublisher())
+                                          .isBookstore(user.getIsBookstore())
                                           .build();
     }
 }
