@@ -34,8 +34,8 @@ class Publisher {
   Map<String, dynamic> toJson() {
     return {
       "name": name,
-      "address": address == null ? null : address!.toString(),
-      "books": books
+      "hqAddress": address!.hqAddress,
+      "webSiteAddress": address!.webSiteAddress
     };
   }
 }
