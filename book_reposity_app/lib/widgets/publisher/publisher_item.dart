@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../models/author.dart';
+import '../../models/publisher.dart';
 
-class AuthorItem extends StatelessWidget {
-  Author author;
+class PublisherItem extends StatelessWidget {
+  Publisher publisher;
 
-  AuthorItem(this.author);
+  PublisherItem(this.publisher);
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
@@ -19,11 +19,11 @@ class AuthorItem extends StatelessWidget {
         tileColor: Colors.grey,
         textColor: Colors.black,
         title: Text(
-          author.name,
+          publisher.name,
           style: const TextStyle(fontSize: 16),
         ),
         dense: true,
-        trailing: Text("Qtd. de livros: ${author.books.length}x"),
+        trailing: Text("Livros publicados: ${publisher.books.length}x"),
       ),
     );
   }

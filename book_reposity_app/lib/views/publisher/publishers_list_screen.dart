@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/author/authors_provider.dart';
-import '../../widgets/author/author_item.dart';
+import '../../providers/book/books_provider.dart';
+import '../../providers/publisher/publishers_provider.dart';
+import '../../widgets/publisher/publisher_item.dart';
 
-class AuthorsListScreen extends StatefulWidget {
-  const AuthorsListScreen({super.key});
+class PublishersListScreen extends StatefulWidget {
+  const PublishersListScreen({super.key});
 
   @override
-  State<AuthorsListScreen> createState() => _AuthorsListScreenState();
+  State<PublishersListScreen> createState() => _PublishersListScreenState();
 }
 
-class _AuthorsListScreenState extends State<AuthorsListScreen> {
+class _PublishersListScreenState extends State<PublishersListScreen> {
   bool _isLoading = true;
+
   @override
   void initState() {
     super.initState();
     Future.wait([
       Future.delayed(const Duration(seconds: 1)),
-    ]).then((_) => Provider.of<AuthorsProvider>(context, listen: false)
-            .getAuthors()
-            .then((_) {
-          setState(() {
-            _isLoading = false;
-          });
-        }));
+    ]).then((_) {
+      Provider.of<PublishersProvider>(context, listen: false).getPublishers();
+      Provider.of<BooksProvider>(context, listen: false).getBooks().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    var authorProvider = context.watch<AuthorsProvider>();
+    var publishersProvider = context.watch<PublishersProvider>();
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Autores",
+          title: const Text("Editoras",
               style: TextStyle(color: Colors.white, fontSize: 18)),
           actions: [
             IconButton(
                 onPressed: () => Navigator.of(context)
-                    .pushNamed("/author-form-screen", arguments: null),
+                    .pushNamed("/publisher-form-screen", arguments: false),
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -47,12 +50,12 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
               )
             : Padding(
                 padding: const EdgeInsets.all(10),
-                child: authorProvider.authors.isNotEmpty
+                child: publishersProvider.publishers.isNotEmpty
                     ? ListView.separated(
                         separatorBuilder: ((context, index) => const Divider(
                               height: 10,
                             )),
-                        itemCount: authorProvider.authors.length,
+                        itemCount: publishersProvider.publishers.length,
                         itemBuilder: ((context, index) => GestureDetector(
                             onTap: () => showModalBottomSheet(
                                 isScrollControlled: true,
@@ -75,12 +78,7 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () => Navigator.of(context)
-                                              .pushNamed("/author-form-screen",
-                                                  arguments: authorProvider
-                                                      .authors[index])
-                                              .then((_) =>
-                                                  Navigator.of(context).pop()),
+                                          onPressed: () {},
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(
@@ -90,13 +88,16 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () => Provider.of<
-                                                      AuthorsProvider>(context,
-                                                  listen: false)
-                                              .removeAuthor(authorProvider
-                                                  .authors[index].id)
-                                              .then((_) =>
-                                                  Navigator.of(context).pop()),
+                                          onPressed: () =>
+                                              Provider.of<PublishersProvider>(
+                                                      context,
+                                                      listen: false)
+                                                  .removePublisher(
+                                                      publishersProvider
+                                                          .publishers[index].id)
+                                                  .then((_) =>
+                                                      Navigator.of(context)
+                                                          .pop()),
                                           child: const Text(
                                             "Deletar",
                                             style: TextStyle(
@@ -109,11 +110,12 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
                                     ),
                                   );
                                 })),
-                            child: AuthorItem(authorProvider.authors[index]))),
+                            child: PublisherItem(
+                                publishersProvider.publishers[index]))),
                       )
                     : const Center(
                         child: Text(
-                          "Nenhum autor cadastrado!",
+                          "Nenhuma editora cadastrada!",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 30,
