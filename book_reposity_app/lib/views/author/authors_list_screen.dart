@@ -75,12 +75,22 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () => Navigator.of(context)
-                                              .pushNamed("/author-form-screen",
-                                                  arguments: authorProvider
-                                                      .authors[index])
-                                              .then((_) =>
-                                                  Navigator.of(context).pop()),
+                                          onPressed: () async {
+                                            final bool? result = await Navigator
+                                                    .of(context)
+                                                .pushNamed<bool>(
+                                                    "/author-form-screen",
+                                                    arguments: authorProvider
+                                                        .authors[index]);
+                                            if (!mounted) return;
+                                            if (!result!) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Operação não autorizada!")));
+                                            }
+                                            Navigator.of(context).pop();
+                                          },
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(

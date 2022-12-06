@@ -42,7 +42,8 @@ class _BooksListScreenState extends State<BooksListScreen> {
           actions: [
             IconButton(
                 onPressed: () => Navigator.of(context)
-                    .pushNamed("/book-form-screen", arguments: false),
+                    .pushNamed("/book-form-screen", arguments: null)
+                    .then((_) => Navigator.of(context).pop()),
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -80,7 +81,23 @@ class _BooksListScreenState extends State<BooksListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            final bool? result =
+                                                await Navigator.of(context)
+                                                    .pushNamed<bool>(
+                                                        "/book-form-screen",
+                                                        arguments: booksProvider
+                                                            .books[index]);
+
+                                            if (!result!) {
+                                              if (!mounted) return;
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Operação não autorizada!")));
+                                              Navigator.of(context).pop();
+                                            }
+                                          },
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(

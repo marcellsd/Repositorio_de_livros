@@ -78,7 +78,7 @@ class AuthorsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateAuthor(Author author) async {
+  Future<bool> updateAuthor(Author author) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
 
@@ -93,7 +93,8 @@ class AuthorsProvider extends ChangeNotifier {
         bookIds.add(int.parse(book.id));
       }
     }
-    final response = await http.patch(Uri.parse("$baseUrl/${author.id})"),
+
+    final response = await http.patch(Uri.parse("$baseUrl/${author.id}"),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -105,7 +106,10 @@ class AuthorsProvider extends ChangeNotifier {
       _authors.removeWhere((oldAuthor) => oldAuthor.id == author.id);
       _authors.add(author);
       notifyListeners();
+      return true;
     }
+
+    return false;
   }
 
   Future<void> removeAuthor(String id) async {

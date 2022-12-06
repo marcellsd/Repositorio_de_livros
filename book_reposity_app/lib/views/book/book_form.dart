@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/author.dart';
@@ -22,10 +23,10 @@ class _BookFormState extends State<BookForm> {
   final _editionController = TextEditingController();
   final List<Author> _authorsList = [];
   Publisher? _selectedPublisher;
-  int? _selectedPublisherIndex;
   DateTime? _publicationDate;
+  Book? _book;
 
-  late bool _isEditing;
+  var _isEditing = false;
   var _isLoadingMode = true;
   final _formKey = GlobalKey<FormState>();
 
@@ -33,13 +34,30 @@ class _BookFormState extends State<BookForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isLoadingMode) {
-      _isEditing = ModalRoute.of(context)!.settings.arguments as bool;
+      _book = ModalRoute.of(context)!.settings.arguments as Book?;
+      if (_book != null) {
+        _titleController.text = _book!.title;
+        _isbnController.text = _book!.isbn;
+        _numberOfPagesController.text = _book!.numberOfPages.toString();
+        _editionController.text = _book!.edition.toString();
+        _book!.authors.forEach((author) {
+          _authorsList.add(author);
+        });
+        _publicationDate = _book!.publicationDate;
+        _selectedPublisher = _book!.publisher;
+        _isEditing = true;
+      }
       _isLoadingMode = false;
     }
   }
 
   void _validateForm() {
     if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (_authorsList.isEmpty) {
+      buildAlertDialog("Selecione ao menos um autor");
       return;
     }
 
@@ -52,9 +70,10 @@ class _BookFormState extends State<BookForm> {
       buildAlertDialog("Selecione uma editora!");
       return;
     }
+    Book book;
 
-    var book = Book(
-        id: "0",
+    book = Book(
+        id: _isEditing ? _book!.id : "",
         title: _titleController.text,
         authors: _authorsList,
         publisher: _selectedPublisher!,
@@ -63,9 +82,15 @@ class _BookFormState extends State<BookForm> {
         publicationDate: _publicationDate!,
         edition: int.parse(_editionController.text));
 
-    Provider.of<BooksProvider>(context, listen: false)
-        .saveBook(book)
-        .then((_) => Navigator.of(context).pop(true));
+    if (_isEditing) {
+      Provider.of<BooksProvider>(context, listen: false)
+          .updateBook(book)
+          .then((result) => Navigator.of(context).pop(result));
+    } else {
+      Provider.of<BooksProvider>(context, listen: false)
+          .saveBook(book)
+          .then((_) => Navigator.of(context).pop<bool>(true));
+    }
   }
 
   void buildAlertDialog(String message) {
@@ -232,6 +257,12 @@ class _BookFormState extends State<BookForm> {
                           "Selecione a data de publicação: ",
                           style: TextStyle(fontSize: 16, color: Colors.black),
                         ),
+                        Text(
+                          DateFormat("dd/MM/yyyy")
+                              .format(_publicationDate ?? DateTime.now()),
+                          style: const TextStyle(
+                              color: Colors.black, fontSize: 14),
+                        ),
                         IconButton(
                             onPressed: () => showDatePicker(
                                   context: context,
@@ -271,29 +302,34 @@ class _BookFormState extends State<BookForm> {
                       padding: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 10),
                       height: 120,
-                      child: ListView.builder(
-                        itemCount: authorsProvider.authors.length,
-                        itemBuilder: ((context, index) => ListTile(
-                            selected: _authorsList
-                                .contains(authorsProvider.authors[index]),
-                            selectedTileColor: Colors.blue,
-                            dense: true,
-                            title: Text(
-                              authorsProvider.authors[index].name,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 14),
-                            ),
-                            onTap: () {
-                              final selectedAuthor =
-                                  authorsProvider.authors[index];
-                              setState(() {
-                                if (_authorsList.contains(selectedAuthor)) {
-                                  _authorsList.remove(selectedAuthor);
-                                } else {
-                                  _authorsList.add(selectedAuthor);
-                                }
-                              });
-                            })),
+                      child: Card(
+                        child: ListView.builder(
+                          itemCount: authorsProvider.authors.length,
+                          itemBuilder: ((context, index) => ListTile(
+                              selected: _authorsList.any((author) =>
+                                  author.id ==
+                                  authorsProvider.authors[index].id),
+                              selectedTileColor: Colors.blue,
+                              dense: true,
+                              title: Text(
+                                authorsProvider.authors[index].name,
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 14),
+                              ),
+                              onTap: () {
+                                final selectedAuthor =
+                                    authorsProvider.authors[index];
+                                setState(() {
+                                  if (_authorsList.any((author) =>
+                                      author.id == selectedAuthor.id)) {
+                                    _authorsList.removeWhere((author) =>
+                                        selectedAuthor.id == author.id);
+                                  } else {
+                                    _authorsList.add(selectedAuthor);
+                                  }
+                                });
+                              })),
+                        ),
                       ),
                     ),
                     const SizedBox(
@@ -315,29 +351,32 @@ class _BookFormState extends State<BookForm> {
                     ),
                     SizedBox(
                       height: 120,
-                      child: ListView.builder(
-                        itemCount: publishersProvider.publishers.length,
-                        itemBuilder: ((context, index) => ListTile(
-                            selected: _selectedPublisherIndex == index,
-                            title: Text(
-                              publishersProvider.publishers[index].name,
-                              style: const TextStyle(
-                                  color: Colors.black, fontSize: 14),
-                            ),
-                            selectedTileColor: Colors.blue,
-                            onTap: () {
-                              setState(() {
-                                if (_selectedPublisher !=
-                                    publishersProvider.publishers[index]) {
-                                  _selectedPublisherIndex = index;
-                                  _selectedPublisher =
-                                      publishersProvider.publishers[index];
-                                } else {
-                                  _selectedPublisher = null;
-                                  _selectedPublisherIndex = null;
-                                }
-                              });
-                            })),
+                      child: Card(
+                        child: ListView.builder(
+                          itemCount: publishersProvider.publishers.length,
+                          itemBuilder: ((context, index) => ListTile(
+                              selected: _selectedPublisher != null
+                                  ? _selectedPublisher!.id ==
+                                      publishersProvider.publishers[index].id
+                                  : false,
+                              title: Text(
+                                publishersProvider.publishers[index].name,
+                                style: const TextStyle(
+                                    color: Colors.black, fontSize: 14),
+                              ),
+                              selectedTileColor: Colors.blue,
+                              onTap: () {
+                                setState(() {
+                                  if (_selectedPublisher !=
+                                      publishersProvider.publishers[index]) {
+                                    _selectedPublisher =
+                                        publishersProvider.publishers[index];
+                                  } else {
+                                    _selectedPublisher = null;
+                                  }
+                                });
+                              })),
+                        ),
                       ),
                     ),
                   ],
