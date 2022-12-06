@@ -46,7 +46,7 @@ class _AuthorFormState extends State<AuthorForm> {
     } else {
       Provider.of<AuthorsProvider>(context, listen: false)
           .saveAuthor(author)
-          .then((_) => Navigator.of(context).pop(true));
+          .then((result) => Navigator.of(context).pop(result));
     }
   }
 

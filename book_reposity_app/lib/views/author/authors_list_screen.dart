@@ -36,8 +36,15 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
               style: TextStyle(color: Colors.white, fontSize: 18)),
           actions: [
             IconButton(
-                onPressed: () => Navigator.of(context)
-                    .pushNamed("/author-form-screen", arguments: null),
+                onPressed: () async {
+                  final bool? result = await Navigator.of(context)
+                      .pushNamed<bool>("/author-form-screen", arguments: null);
+                  if (!mounted) return;
+                  if (!result!) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Operação não autorizada!")));
+                  }
+                },
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -100,13 +107,22 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () => Provider.of<
-                                                      AuthorsProvider>(context,
-                                                  listen: false)
-                                              .removeAuthor(authorProvider
-                                                  .authors[index].id)
-                                              .then((_) =>
-                                                  Navigator.of(context).pop()),
+                                          onPressed: () async {
+                                            await Provider.of<AuthorsProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .removeAuthor(authorProvider
+                                                    .authors[index].id)
+                                                .then((result) {
+                                              if (!result) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        content: Text(
+                                                            "Operação não autorizada!")));
+                                              }
+                                            }).then((_) => Navigator.of(context)
+                                                    .pop());
+                                          },
                                           child: const Text(
                                             "Deletar",
                                             style: TextStyle(

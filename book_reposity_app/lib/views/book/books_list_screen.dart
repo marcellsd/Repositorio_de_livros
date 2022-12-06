@@ -41,9 +41,16 @@ class _BooksListScreenState extends State<BooksListScreen> {
               style: TextStyle(color: Colors.white, fontSize: 18)),
           actions: [
             IconButton(
-                onPressed: () => Navigator.of(context)
-                    .pushNamed("/book-form-screen", arguments: null)
-                    .then((_) => Navigator.of(context).pop()),
+                onPressed: () async {
+                  final bool? result = await Navigator.of(context)
+                      .pushNamed<bool>("/book-form-screen", arguments: null);
+
+                  if (!mounted) return;
+                  if (!result!) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Operação não autorizada!")));
+                  }
+                },
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -89,13 +96,12 @@ class _BooksListScreenState extends State<BooksListScreen> {
                                                         arguments: booksProvider
                                                             .books[index]);
 
+                                            if (!mounted) return;
                                             if (!result!) {
-                                              if (!mounted) return;
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
                                                       content: Text(
                                                           "Operação não autorizada!")));
-                                              Navigator.of(context).pop();
                                             }
                                           },
                                           child: const Text(

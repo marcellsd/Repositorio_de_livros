@@ -42,7 +42,7 @@ class BooksProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveBook(Book book) async {
+  Future<bool> saveBook(Book book) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
     if (user != null) {
@@ -73,7 +73,9 @@ class BooksProvider extends ChangeNotifier {
       book.id = bookData["id"].toString();
       _books.add(book);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   Future<bool> updateBook(Book book) async {
@@ -115,7 +117,7 @@ class BooksProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> removeBook(String id) async {
+  Future<bool> removeBook(String id) async {
     final response = await http.delete(Uri.parse("$baseUrl/$id"), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -125,6 +127,8 @@ class BooksProvider extends ChangeNotifier {
     if (response.statusCode == 204) {
       _books.removeWhere((book) => book.id == id);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 }

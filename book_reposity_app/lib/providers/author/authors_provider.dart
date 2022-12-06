@@ -43,7 +43,7 @@ class AuthorsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveAuthor(Author author) async {
+  Future<bool> saveAuthor(Author author) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
     if (user != null) {
@@ -75,7 +75,9 @@ class AuthorsProvider extends ChangeNotifier {
       author.id = data["id"].toString();
       _authors.add(author);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   Future<bool> updateAuthor(Author author) async {
@@ -112,7 +114,7 @@ class AuthorsProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<void> removeAuthor(String id) async {
+  Future<bool> removeAuthor(String id) async {
     final response = await http.delete(Uri.parse("$baseUrl/$id"), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -122,6 +124,8 @@ class AuthorsProvider extends ChangeNotifier {
     if (response.statusCode == 204) {
       _authors.removeWhere((author) => author.id == id);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 }
