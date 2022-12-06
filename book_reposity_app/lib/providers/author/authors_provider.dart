@@ -78,6 +78,36 @@ class AuthorsProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> updateAuthor(Author author) async {
+    final prefs = await SharedPreferences.getInstance();
+    final user = prefs.getString("user");
+
+    if (user != null) {
+      final userData = jsonDecode(user);
+      _token = userData["token"];
+    }
+
+    List<int> bookIds = [];
+    if (author.books.isNotEmpty) {
+      for (var book in author.books) {
+        bookIds.add(int.parse(book.id));
+      }
+    }
+    final response = await http.patch(Uri.parse("$baseUrl/${author.id})"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: jsonEncode(author.toJson(bookIds)));
+
+    if (response.statusCode == 200) {
+      _authors.removeWhere((oldAuthor) => oldAuthor.id == author.id);
+      _authors.add(author);
+      notifyListeners();
+    }
+  }
+
   Future<void> removeAuthor(String id) async {
     final response = await http.delete(Uri.parse("$baseUrl/$id"), headers: {
       'Content-Type': 'application/json',

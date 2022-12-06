@@ -37,7 +37,7 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
           actions: [
             IconButton(
                 onPressed: () => Navigator.of(context)
-                    .pushNamed("/author-form-screen", arguments: false),
+                    .pushNamed("/author-form-screen", arguments: null),
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -75,7 +75,12 @@ class _AuthorsListScreenState extends State<AuthorsListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () {},
+                                          onPressed: () => Navigator.of(context)
+                                              .pushNamed("/author-form-screen",
+                                                  arguments: authorProvider
+                                                      .authors[index])
+                                              .then((_) =>
+                                                  Navigator.of(context).pop()),
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(

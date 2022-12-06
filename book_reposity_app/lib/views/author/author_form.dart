@@ -12,6 +12,7 @@ class AuthorForm extends StatefulWidget {
 class _AuthorFormState extends State<AuthorForm> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  Author? _author;
   late bool _isEditing;
   bool _isLoadingMode = true;
 
@@ -19,20 +20,32 @@ class _AuthorFormState extends State<AuthorForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isLoadingMode) {
-      _isEditing = ModalRoute.of(context)!.settings.arguments as bool;
+      _author = ModalRoute.of(context)!.settings.arguments as Author;
+      _isEditing = _author != null ? true : false;
       _isLoadingMode = false;
     }
+
+    _nameController.text = _isEditing ? _author!.name : "";
   }
 
   void _validateForm() {
     if (!_formKey.currentState!.validate()) {
       return;
     }
+    Author? author;
+    _isEditing
+        ? author = Author(_author!.id, _nameController.text, [])
+        : Author("", _nameController.text, []);
 
-    var author = Author("0", _nameController.text, []);
-    Provider.of<AuthorsProvider>(context, listen: false)
-        .saveAuthor(author)
-        .then((_) => Navigator.of(context).pop(true));
+    if (_isEditing) {
+      Provider.of<AuthorsProvider>(context, listen: false)
+          .updateAuthor(author!)
+          .then((_) => Navigator.of(context).pop(true));
+    } else {
+      Provider.of<AuthorsProvider>(context, listen: false)
+          .saveAuthor(author!)
+          .then((_) => Navigator.of(context).pop(true));
+    }
   }
 
   @override
