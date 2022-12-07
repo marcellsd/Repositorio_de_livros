@@ -84,6 +84,7 @@ class _AuthorFormState extends State<AuthorForm> {
                     TextFormField(
                       cursorColor: Colors.black,
                       style: Theme.of(context).textTheme.headline3,
+                      keyboardType: TextInputType.name,
                       controller: _nameController,
                       decoration: InputDecoration(
                         labelText: "Nome do autor",
