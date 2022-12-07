@@ -63,12 +63,12 @@ class _PublisherFormState extends State<PublisherForm> {
       Provider.of<PublishersProvider>(context, listen: false)
           .updatePublisher(publisher)
           .then((result) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(result);
       });
     } else {
       Provider.of<PublishersProvider>(context, listen: false)
           .savePublisher(publisher)
-          .then((_) => Navigator.of(context).pop());
+          .then((result) => Navigator.of(context).pop(result));
     }
   }
 
@@ -85,85 +85,90 @@ class _PublisherFormState extends State<PublisherForm> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
         child: Card(
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    "Formulário da editora",
-                    style: TextStyle(
-                        fontFamily: "Acme", fontSize: 24, color: Colors.black),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    cursorColor: Colors.black,
-                    style: Theme.of(context).textTheme.headline3,
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: "Nome da editora",
-                      hintText: "Insira o nome da editora",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Formulário da editora",
+                      style: TextStyle(
+                          fontFamily: "Acme",
+                          fontSize: 24,
+                          color: Colors.black),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Insira um nome";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    cursorColor: Colors.black,
-                    style: Theme.of(context).textTheme.headline3,
-                    controller: _hqAddressController,
-                    decoration: InputDecoration(
-                      labelText: "Endereço da editora",
-                      hintText: "Insira o endereço da editora",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                    const SizedBox(
+                      height: 20,
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Insira um endereço";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    cursorColor: Colors.black,
-                    style: Theme.of(context).textTheme.headline3,
-                    controller: _webSiteAddressController,
-                    decoration: InputDecoration(
-                      labelText: "Website da editora",
-                      hintText: "Insira o website da editora",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
+                    TextFormField(
+                      cursorColor: Colors.black,
+                      style: Theme.of(context).textTheme.headline3,
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: "Nome da editora",
+                        hintText: "Insira o nome da editora",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Insira um nome";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Insira um website";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                ],
-              )),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      cursorColor: Colors.black,
+                      style: Theme.of(context).textTheme.headline3,
+                      controller: _hqAddressController,
+                      decoration: InputDecoration(
+                        labelText: "Endereço da editora",
+                        hintText: "Insira o endereço da editora",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Insira um endereço";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      cursorColor: Colors.black,
+                      style: Theme.of(context).textTheme.headline3,
+                      controller: _webSiteAddressController,
+                      decoration: InputDecoration(
+                        labelText: "Website da editora",
+                        hintText: "Insira o website da editora",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Insira um website";
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                  ],
+                )),
+          ),
         ),
       ),
     );

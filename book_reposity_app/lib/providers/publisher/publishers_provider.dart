@@ -39,7 +39,7 @@ class PublishersProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> savePublisher(Publisher publisher) async {
+  Future<bool> savePublisher(Publisher publisher) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
     if (user != null) {
@@ -59,7 +59,9 @@ class PublishersProvider extends ChangeNotifier {
       publisher.id = publisherData["id"].toString();
       _publishers.add(publisher);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   Future<bool> updatePublisher(Publisher publisher) async {
@@ -88,7 +90,7 @@ class PublishersProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<void> removePublisher(String id) async {
+  Future<bool> removePublisher(String id) async {
     final response = await http.delete(
       Uri.parse("$baseUrl/$id"),
       headers: {
@@ -101,6 +103,8 @@ class PublishersProvider extends ChangeNotifier {
     if (response.statusCode == 204) {
       _publishers.removeWhere((publisher) => publisher.id == id);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 }

@@ -27,7 +27,7 @@ class _AuthScreenState extends State<AuthScreen> {
     _passwordController.text = "";
   }
 
-  void _validateForm() {
+  void _validateForm() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -37,9 +37,17 @@ class _AuthScreenState extends State<AuthScreen> {
     if (!_isLogin) {
       var user = UserModel(_loginController.text, _passwordController.text,
           _isAuthor, _isPublisher, _isBookstore);
-      Provider.of<AuthProvider>(context, listen: false)
+      await Provider.of<AuthProvider>(context, listen: false)
           .registerUser(user)
-          .then((value) {
+          .timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          setState(() {
+            _isLoading = false;
+          });
+          return null;
+        },
+      ).then((value) {
         if (value != null) {
           Future.delayed(const Duration(seconds: 2)).then(
             (_) {
@@ -51,16 +59,36 @@ class _AuthScreenState extends State<AuthScreen> {
             },
           );
         } else {
-          print("error");
+          setState(() {
+            _isLoading = false;
+            ScaffoldMessenger.of(context).removeCurrentSnackBar();
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Erro ao tentar autenticar")));
+          });
         }
       });
     } else {
-      Provider.of<AuthProvider>(context, listen: false)
+      await Provider.of<AuthProvider>(context, listen: false)
           .authenticateUser(_loginController.text, _passwordController.text)
-          .then(
+          .timeout(
+        const Duration(seconds: 3),
+        onTimeout: () {
+          setState(() {
+            _isLoading = false;
+          });
+          return "";
+        },
+      ).then(
         (token) {
           if (token != '') {
             Navigator.of(context).pushReplacementNamed("/home-screen");
+          } else {
+            setState(() {
+              _isLoading = false;
+              ScaffoldMessenger.of(context).removeCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Erro ao tentar autenticar")));
+            });
           }
         },
       );
@@ -250,8 +278,8 @@ class _AuthScreenState extends State<AuthScreen> {
                                     onPressed: () {
                                       setState(() {
                                         _isLoading = true;
-                                        _validateForm();
                                       });
+                                      _validateForm();
                                     },
                                     child: _isLoading
                                         ? const CircularProgressIndicator(
