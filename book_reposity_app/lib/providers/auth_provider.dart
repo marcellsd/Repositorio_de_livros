@@ -5,11 +5,12 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user_model.dart';
+import '../utils/environment.dart';
 
 class AuthProvider extends ChangeNotifier {
   String _token = '';
   String _username = '';
-  var baseUrl = "http://10.0.2.2:8080/api/user";
+  var baseUrl = "${Environment().config.apiUrl}/user";
 
   String get token => _token;
 

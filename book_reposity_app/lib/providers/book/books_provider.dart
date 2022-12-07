@@ -5,10 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/book_model.dart';
+import '../../utils/environment.dart';
 
 class BooksProvider extends ChangeNotifier {
   final List<Book> _books = [];
-  final baseUrl = "http://10.0.2.2:8080/api/book";
+  final baseUrl = "${Environment().config.apiUrl}/book";
 
   String? _token;
 
