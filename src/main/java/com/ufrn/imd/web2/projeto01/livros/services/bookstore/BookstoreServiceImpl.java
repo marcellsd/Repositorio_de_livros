@@ -15,14 +15,11 @@ import com.ufrn.imd.web2.projeto01.livros.dtos.BookstoreDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoBookDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.NotFoundException;
 import com.ufrn.imd.web2.projeto01.livros.exception.OperacaoNaoAutorizadaException;
-import com.ufrn.imd.web2.projeto01.livros.models.Address;
-import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.models.Bookstore;
 import com.ufrn.imd.web2.projeto01.livros.models.Product;
 import com.ufrn.imd.web2.projeto01.livros.models.RepoUser;
 import com.ufrn.imd.web2.projeto01.livros.repositories.BookstoreRepository;
 import com.ufrn.imd.web2.projeto01.livros.repositories.RepoUserRepository;
-import com.ufrn.imd.web2.projeto01.livros.services.address.AddressService;
 import com.ufrn.imd.web2.projeto01.livros.services.product.ProductService;
 
 @Component

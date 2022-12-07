@@ -78,29 +78,54 @@ public class PublisherServiceImpl implements PublisherService{
 	}
 
 	@Override
-	public Publisher updatePutById(Integer currentPublisherId, Publisher updatedPublisher) {
+	public Publisher updatePutById(Integer currentPublisherId, PublisherDTO updatedPublisherDTO) {
         Publisher oldPublisher = getPublisherById(currentPublisherId);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
            if(oldPublisher.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
                 throw new OperacaoNaoAutorizadaException("Unauthorized edition for this logged user");
            }
-        updatedPublisher.setId(oldPublisher.getId());
-            return publishedRepository.save(updatedPublisher);
-	}
+        Publisher updatedPublisher = new Publisher();
+        Address updatedAddress = oldPublisher.getAddress();
 
-	@Override
-	public Publisher updatePatchById(Integer currentPublisherId, Publisher updatedPublisher) {
-        Publisher oldPublisher = getPublisherById(currentPublisherId);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-           if(oldPublisher.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
-                throw new OperacaoNaoAutorizadaException("Unauthorized edition for this logged user");
-           }
         updatedPublisher.setId(oldPublisher.getId());
         updatedPublisher.setCreatorId(oldPublisher.getCreatorId());
-        if(updatedPublisher.getAddress() == null) updatedPublisher.setAddress(oldPublisher.getAddress());
-        if(updatedPublisher.getBooks() == null) updatedPublisher.setBooks(oldPublisher.getBooks());
-        if(updatedPublisher.getName() == null) updatedPublisher.setName(oldPublisher.getName());
+        updatedAddress.setId(oldPublisher.getAddress().getId());
+
+        if(updatedPublisherDTO.getHqAddress() != null) updatedAddress.setHqAddress(updatedPublisherDTO.getHqAddress());
+        if(updatedPublisherDTO.getWebSiteAddress() != null) updatedAddress.setWebSiteAddress(updatedPublisherDTO.getWebSiteAddress());
+        if(updatedPublisherDTO.getName() == null) {
+            updatedPublisher.setName(oldPublisher.getName());
+        } else updatedPublisher.setName(updatedPublisherDTO.getName());
+
+        updatedPublisher.setAddress(updatedAddress);
+
         return publishedRepository.save(updatedPublisher);
+	}
+
+
+	@Override
+	public Publisher updatePatchById(Integer currentPublisherId, PublisherDTO updatedPublisherDTO) {
+        Publisher oldPublisher = getPublisherById(currentPublisherId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+           if(oldPublisher.getCreatorId() != repoUserRepository.findByUsername(auth.getName()).get().getId()){
+                throw new OperacaoNaoAutorizadaException("Unauthorized edition for this logged user");
+           }
+           Publisher updatedPublisher = new Publisher();
+           Address updatedAddress = oldPublisher.getAddress();
+   
+           updatedPublisher.setId(oldPublisher.getId());
+           updatedPublisher.setCreatorId(oldPublisher.getCreatorId());
+           updatedAddress.setId(oldPublisher.getAddress().getId());
+   
+           if(updatedPublisherDTO.getHqAddress() != null) updatedAddress.setHqAddress(updatedPublisherDTO.getHqAddress());
+           if(updatedPublisherDTO.getWebSiteAddress() != null) updatedAddress.setWebSiteAddress(updatedPublisherDTO.getWebSiteAddress());
+           if(updatedPublisherDTO.getName() == null) {
+               updatedPublisher.setName(oldPublisher.getName());
+           } else updatedPublisher.setName(updatedPublisherDTO.getName());
+           
+           updatedPublisher.setAddress(updatedAddress);
+
+           return publishedRepository.save(updatedPublisher);
 	}
 
     @Override
@@ -168,10 +193,7 @@ public class PublisherServiceImpl implements PublisherService{
 
             return booksDTO;
         }
-
         return null;
     }
 
-    
-    
 }
