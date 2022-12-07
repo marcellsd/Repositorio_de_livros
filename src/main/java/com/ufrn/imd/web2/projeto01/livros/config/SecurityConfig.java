@@ -1,5 +1,6 @@
 package com.ufrn.imd.web2.projeto01.livros.config;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -73,8 +74,5 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-
-
-    
 }
+

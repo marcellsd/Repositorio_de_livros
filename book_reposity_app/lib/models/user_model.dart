@@ -3,6 +3,8 @@ class UserModel {
   final String password;
   final bool isAuthor;
   final bool isPublisher;
+  final bool isBookstore;
 
-  UserModel(this.username, this.password, this.isAuthor, this.isPublisher);
+  UserModel(this.username, this.password, this.isAuthor, this.isPublisher,
+      this.isBookstore);
 }

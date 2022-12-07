@@ -8,7 +8,7 @@ import '../../models/author.dart';
 class AuthorsProvider extends ChangeNotifier {
   final List<Author> _authors = [];
 
-  final baseUrl = "http://192.168.0.153:8080/api/author";
+  final baseUrl = "http://10.0.2.2:8080/api/author";
 
   List<Author> get authors => _authors;
 

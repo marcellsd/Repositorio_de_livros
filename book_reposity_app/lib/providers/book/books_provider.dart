@@ -8,7 +8,7 @@ import '../../models/book_model.dart';
 
 class BooksProvider extends ChangeNotifier {
   final List<Book> _books = [];
-  final baseUrl = "http://192.168.0.153:8080/api/book";
+  final baseUrl = "http://10.0.2.2:8080/api/book";
 
   String? _token;
 

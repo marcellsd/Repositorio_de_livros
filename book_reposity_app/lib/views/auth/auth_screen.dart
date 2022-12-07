@@ -13,6 +13,7 @@ class _AuthScreenState extends State<AuthScreen> {
   var _isLogin = true;
   var _isAuthor = false;
   var _isPublisher = false;
+  var _isBookstore = false;
   var _isObscure = true;
   var _isLoading = false;
   final _loginController = TextEditingController();
@@ -35,7 +36,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
     if (!_isLogin) {
       var user = UserModel(_loginController.text, _passwordController.text,
-          _isAuthor, _isPublisher);
+          _isAuthor, _isPublisher, _isBookstore);
       Provider.of<AuthProvider>(context, listen: false)
           .registerUser(user)
           .then((value) {
@@ -199,6 +200,27 @@ class _AuthScreenState extends State<AuthScreen> {
                                           onChanged: (value) {
                                             setState(() {
                                               _isAuthor = value!;
+                                            });
+                                          }),
+                                    ),
+                                    SizedBox(
+                                      height: 40,
+                                      child: CheckboxListTile(
+                                          visualDensity: VisualDensity.compact,
+                                          contentPadding:
+                                              const EdgeInsets.all(0),
+                                          controlAffinity:
+                                              ListTileControlAffinity.leading,
+                                          title: Text(
+                                            "Livraria",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline1,
+                                          ),
+                                          value: _isBookstore,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              _isBookstore = value!;
                                             });
                                           }),
                                     ),
