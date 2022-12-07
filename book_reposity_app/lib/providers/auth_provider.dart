@@ -9,7 +9,7 @@ import '../models/user_model.dart';
 class AuthProvider extends ChangeNotifier {
   String _token = '';
   String _username = '';
-  var baseUrl = "http://192.168.0.153:8080/api/user";
+  var baseUrl = "http://10.0.2.2:8080/api/user";
 
   String get token => _token;
 
@@ -38,7 +38,8 @@ class AuthProvider extends ChangeNotifier {
             "username": newUser.username,
             "password": newUser.password,
             "isAuthor": newUser.isAuthor,
-            "isPublisher": newUser.isPublisher
+            "isPublisher": newUser.isPublisher,
+            "isBookstore": newUser.isBookstore
           },
         ),
       );
@@ -46,7 +47,7 @@ class AuthProvider extends ChangeNotifier {
       if (response.statusCode == 201) {
         var data = json.decode(response.body);
         var user = UserModel(data["username"], data["password"],
-            data["isAuthor"], data["isPublisher"]);
+            data["isAuthor"], data["isPublisher"], data["isBookstore"]);
         return user;
       } else {
         return null;
