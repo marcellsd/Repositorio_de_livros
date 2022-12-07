@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.AuthorDTO;
-import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoAuthorDTO;
 import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;

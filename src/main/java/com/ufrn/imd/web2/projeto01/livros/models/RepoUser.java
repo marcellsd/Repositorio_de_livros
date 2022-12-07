@@ -12,8 +12,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
 @Table(name = "users")
@@ -40,6 +38,9 @@ public class RepoUser {
 
     @Column
     private Boolean isPublisher;
+
+    @Column
+    private Boolean isBookstore;
 
     public RepoUser(){}
     
@@ -96,6 +97,22 @@ public class RepoUser {
 
     public void setFavorite(Favorites favorite) {
         this.favorites = favorite;
+    }
+
+    public Favorites getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Favorites favorites) {
+        this.favorites = favorites;
+    }
+
+    public Boolean getIsBookstore() {
+        return isBookstore;
+    }
+
+    public void setIsBookstore(Boolean isBookstore) {
+        this.isBookstore = isBookstore;
     }
 
     
