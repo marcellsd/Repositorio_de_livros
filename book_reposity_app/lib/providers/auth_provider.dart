@@ -30,7 +30,9 @@ class AuthProvider extends ChangeNotifier {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),
-        headers: <String, String>{"Content-Type": "application/json"},
+        headers: <String, String>{
+          "Content-Type": "application/json",
+        },
         body: jsonEncode(
           {
             "username": newUser.username,
@@ -58,7 +60,9 @@ class AuthProvider extends ChangeNotifier {
     try {
       final response = await http.post(
         Uri.parse("$baseUrl/auth"),
-        headers: <String, String>{"Content-Type": "application/json"},
+        headers: <String, String>{
+          "Content-Type": "application/json",
+        },
         body: jsonEncode(
           {
             "username": username,

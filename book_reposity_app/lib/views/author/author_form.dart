@@ -2,7 +2,9 @@ import 'package:book_reposity_app/models/author.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/book_model.dart';
 import '../../providers/author/authors_provider.dart';
+import '../../widgets/book/book_item.dart';
 
 class AuthorForm extends StatefulWidget {
   @override
@@ -20,7 +22,7 @@ class _AuthorFormState extends State<AuthorForm> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isLoadingMode) {
-      _author = ModalRoute.of(context)!.settings.arguments as Author;
+      _author = ModalRoute.of(context)!.settings.arguments as Author?;
       _isEditing = _author != null ? true : false;
       _isLoadingMode = false;
     }
@@ -34,17 +36,17 @@ class _AuthorFormState extends State<AuthorForm> {
     }
     Author? author;
     _isEditing
-        ? author = Author(_author!.id, _nameController.text, [])
-        : Author("", _nameController.text, []);
+        ? author = Author(_author!.id, _nameController.text, _author!.books)
+        : author = Author("", _nameController.text, []);
 
     if (_isEditing) {
       Provider.of<AuthorsProvider>(context, listen: false)
-          .updateAuthor(author!)
-          .then((_) => Navigator.of(context).pop(true));
+          .updateAuthor(author)
+          .then((result) => Navigator.of(context).pop(result));
     } else {
       Provider.of<AuthorsProvider>(context, listen: false)
-          .saveAuthor(author!)
-          .then((_) => Navigator.of(context).pop(true));
+          .saveAuthor(author)
+          .then((result) => Navigator.of(context).pop(result));
     }
   }
 
@@ -97,6 +99,16 @@ class _AuthorFormState extends State<AuthorForm> {
                   const SizedBox(
                     height: 20,
                   ),
+                  if (_isEditing)
+                    Expanded(
+                      child: ListView.separated(
+                          separatorBuilder: ((context, index) => const SizedBox(
+                                height: 5,
+                              )),
+                          itemCount: _author!.books.length,
+                          itemBuilder: ((context, index) =>
+                              BookItem(_author!.books[index]))),
+                    ),
                 ],
               )),
         ),

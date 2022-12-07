@@ -40,7 +40,7 @@ class _PublishersListScreenState extends State<PublishersListScreen> {
           actions: [
             IconButton(
                 onPressed: () => Navigator.of(context)
-                    .pushNamed("/publisher-form-screen", arguments: false),
+                    .pushNamed("/publisher-form-screen", arguments: null),
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -78,7 +78,11 @@ class _PublishersListScreenState extends State<PublishersListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () {},
+                                          onPressed: () => Navigator.of(context)
+                                              .pushNamed(
+                                                  "/publisher-form-screen",
+                                                  arguments: publishersProvider
+                                                      .publishers[index]),
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(

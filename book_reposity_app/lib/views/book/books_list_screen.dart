@@ -41,8 +41,16 @@ class _BooksListScreenState extends State<BooksListScreen> {
               style: TextStyle(color: Colors.white, fontSize: 18)),
           actions: [
             IconButton(
-                onPressed: () => Navigator.of(context)
-                    .pushNamed("/book-form-screen", arguments: false),
+                onPressed: () async {
+                  final bool? result = await Navigator.of(context)
+                      .pushNamed<bool>("/book-form-screen", arguments: null);
+
+                  if (!mounted) return;
+                  if (!result!) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Operação não autorizada!")));
+                  }
+                },
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -80,7 +88,22 @@ class _BooksListScreenState extends State<BooksListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            final bool? result =
+                                                await Navigator.of(context)
+                                                    .pushNamed<bool>(
+                                                        "/book-form-screen",
+                                                        arguments: booksProvider
+                                                            .books[index]);
+
+                                            if (!mounted) return;
+                                            if (!result!) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Operação não autorizada!")));
+                                            }
+                                          },
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(

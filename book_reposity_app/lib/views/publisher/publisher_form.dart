@@ -17,15 +17,25 @@ class _PublisherFormState extends State<PublisherForm> {
   final _nameController = TextEditingController();
   final _hqAddressController = TextEditingController();
   final _webSiteAddressController = TextEditingController();
-  late bool _isEditing;
+  bool _isEditing = false;
   bool _isLoadingMode = true;
+  Publisher? _publisher;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (_isLoadingMode) {
-      _isEditing = ModalRoute.of(context)!.settings.arguments as bool;
+      _publisher = ModalRoute.of(context)!.settings.arguments as Publisher?;
+      if (_publisher != null) {
+        _isEditing = true;
+      }
       _isLoadingMode = false;
+    }
+
+    if (_isEditing) {
+      _nameController.text = _publisher!.name;
+      _hqAddressController.text = _publisher!.address!.hqAddress;
+      _webSiteAddressController.text = _publisher!.address!.webSiteAddress;
     }
   }
 
@@ -34,15 +44,32 @@ class _PublisherFormState extends State<PublisherForm> {
       return;
     }
 
-    var newAddress =
-        Address("", _hqAddressController.text, _webSiteAddressController.text);
+    Address newAddress = _isEditing
+        ? Address(_publisher!.address!.id, _publisher!.address!.hqAddress,
+            _publisher!.address!.webSiteAddress)
+        : Address(
+            "", _hqAddressController.text, _webSiteAddressController.text);
 
-    var publisher = Publisher(
-        id: "", name: _nameController.text, address: newAddress, books: []);
+    Publisher? publisher = _isEditing
+        ? Publisher(
+            id: _publisher!.id,
+            name: _publisher!.name,
+            address: newAddress,
+            books: _publisher!.books)
+        : Publisher(
+            id: "", name: _nameController.text, address: newAddress, books: []);
 
-    Provider.of<PublishersProvider>(context, listen: false)
-        .savePublisher(publisher)
-        .then((_) => Navigator.of(context).pop());
+    if (_isEditing) {
+      Provider.of<PublishersProvider>(context, listen: false)
+          .updatePublisher(publisher)
+          .then((result) {
+        Navigator.of(context).pop();
+      });
+    } else {
+      Provider.of<PublishersProvider>(context, listen: false)
+          .savePublisher(publisher)
+          .then((_) => Navigator.of(context).pop());
+    }
   }
 
   @override
