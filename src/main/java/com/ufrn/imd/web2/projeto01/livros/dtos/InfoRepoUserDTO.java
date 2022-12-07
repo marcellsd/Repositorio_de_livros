@@ -14,6 +14,7 @@ public class InfoRepoUserDTO {
     private String password;
     private Boolean isAuthor;
     private Boolean isPublisher;
+    private Boolean isBookstore;
     private InfoFavoritesDTO favorite;
     
 }

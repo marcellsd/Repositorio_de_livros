@@ -2,8 +2,6 @@ package com.ufrn.imd.web2.projeto01.livros.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,13 +15,12 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.ufrn.imd.web2.projeto01.livros.dtos.CredentialsDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.FavoriteDTO;
+import com.ufrn.imd.web2.projeto01.livros.dtos.InfoNoFavoritesRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.InfoRepoUserDTO;
 import com.ufrn.imd.web2.projeto01.livros.dtos.TokenDTO;
 import com.ufrn.imd.web2.projeto01.livros.exception.SenhaInvalidaException;
-import com.ufrn.imd.web2.projeto01.livros.models.Favorites;
 import com.ufrn.imd.web2.projeto01.livros.models.RepoUser;
 import com.ufrn.imd.web2.projeto01.livros.security.JwtService;
-import com.ufrn.imd.web2.projeto01.livros.services.favorites.FavoritesService;
 import com.ufrn.imd.web2.projeto01.livros.services.user.RepoUserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -42,7 +39,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) {
+    public RepoUser saveUser(@RequestBody InfoRepoUserDTO userDTO) throws Exception {
         return userService.saveUser(userDTO);
     }
 
@@ -81,5 +78,9 @@ public class UserController {
         return userService.getFavoritesDTO(id);
     }
    
+    @GetMapping("getByUsername")
+    public InfoNoFavoritesRepoUserDTO getUserByUsername(@RequestBody String username){
+        return userService.getRepoUserByUsername(username);
+    }
 
 }

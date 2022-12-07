@@ -54,12 +54,12 @@ public class PublisherController {
     }
 
     @PutMapping("{id}")
-    public void updatePublisher(@PathVariable Integer id, @RequestBody Publisher updatedPublisher) {
+    public void updatePublisher(@PathVariable Integer id, @RequestBody PublisherDTO updatedPublisher) {
         publisherService.updatePutById(id, updatedPublisher);
     }
 
     @PatchMapping("{id}")
-    public void updatePublisherByPatch(@PathVariable Integer id, @RequestBody Publisher updatedPublisher) {
+    public void updatePublisherByPatch(@PathVariable Integer id, @RequestBody PublisherDTO updatedPublisher) {
         publisherService.updatePatchById(id, updatedPublisher);
     }
 

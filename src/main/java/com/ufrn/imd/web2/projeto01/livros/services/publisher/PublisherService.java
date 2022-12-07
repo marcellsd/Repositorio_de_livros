@@ -16,6 +16,6 @@ public interface PublisherService {
     public void deletePublisherById(Integer id);
     public List<Publisher> getPublishersList();
     public List<InfoPublisherDTO> getPublishersDTOList();
-    public Publisher updatePutById(Integer currentPublisherId, Publisher updatedPublisher);
-    public Publisher updatePatchById(Integer currentPublisherId, Publisher updatedPublisher);
+    public Publisher updatePutById(Integer currentPublisherId, PublisherDTO updatedPublisher);
+    public Publisher updatePatchById(Integer currentPublisherId, PublisherDTO updatedPublisher);
 }
