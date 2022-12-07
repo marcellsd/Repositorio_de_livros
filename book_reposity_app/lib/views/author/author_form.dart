@@ -63,54 +63,60 @@ class _AuthorFormState extends State<AuthorForm> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
         child: Card(
-          child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  const Text(
-                    "Formulário do autor",
-                    style: TextStyle(
-                        fontFamily: "Acme", fontSize: 24, color: Colors.black),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    cursorColor: Colors.black,
-                    style: Theme.of(context).textTheme.headline3,
-                    controller: _nameController,
-                    decoration: InputDecoration(
-                      labelText: "Nome do autor",
-                      hintText: "Insira o nome do autor",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+            child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const Text(
+                      "Formulário do autor",
+                      style: TextStyle(
+                          fontFamily: "Acme",
+                          fontSize: 24,
+                          color: Colors.black),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      cursorColor: Colors.black,
+                      style: Theme.of(context).textTheme.headline3,
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: "Nome do autor",
+                        hintText: "Insira o nome do autor",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Insira um nome";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Insira um nome";
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  if (_isEditing)
-                    Expanded(
-                      child: ListView.separated(
-                          separatorBuilder: ((context, index) => const SizedBox(
-                                height: 5,
-                              )),
-                          itemCount: _author!.books.length,
-                          itemBuilder: ((context, index) =>
-                              BookItem(_author!.books[index]))),
+                    const SizedBox(
+                      height: 20,
                     ),
-                ],
-              )),
+                    if (_isEditing)
+                      Expanded(
+                        child: ListView.separated(
+                            separatorBuilder: ((context, index) =>
+                                const SizedBox(
+                                  height: 5,
+                                )),
+                            itemCount: _author!.books.length,
+                            itemBuilder: ((context, index) =>
+                                BookItem(_author!.books[index]))),
+                      ),
+                  ],
+                )),
+          ),
         ),
       ),
     );

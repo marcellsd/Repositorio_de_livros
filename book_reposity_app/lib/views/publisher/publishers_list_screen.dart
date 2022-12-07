@@ -39,8 +39,17 @@ class _PublishersListScreenState extends State<PublishersListScreen> {
               style: TextStyle(color: Colors.white, fontSize: 18)),
           actions: [
             IconButton(
-                onPressed: () => Navigator.of(context)
-                    .pushNamed("/publisher-form-screen", arguments: null),
+                onPressed: () async {
+                  final bool? result = await Navigator.of(context)
+                      .pushNamed<bool>("/publisher-form-screen",
+                          arguments: null);
+
+                  if (!mounted) return;
+                  if (!result!) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Operação não autorizada!")));
+                  }
+                },
                 icon: const Icon(Icons.add))
           ],
         ),
@@ -78,11 +87,23 @@ class _PublishersListScreenState extends State<PublishersListScreen> {
                                           ),
                                         ),
                                         TextButton(
-                                          onPressed: () => Navigator.of(context)
-                                              .pushNamed(
-                                                  "/publisher-form-screen",
-                                                  arguments: publishersProvider
-                                                      .publishers[index]),
+                                          onPressed: () async {
+                                            final bool? result = await Navigator
+                                                    .of(context)
+                                                .pushNamed<bool>(
+                                                    "/publisher-form-screen",
+                                                    arguments:
+                                                        publishersProvider
+                                                            .publishers[index]);
+
+                                            if (!mounted) return;
+                                            if (!result!) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(const SnackBar(
+                                                      content: Text(
+                                                          "Operação não autorizada!")));
+                                            }
+                                          },
                                           child: const Text(
                                             "Editar",
                                             style: TextStyle(

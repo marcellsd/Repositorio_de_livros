@@ -131,256 +131,260 @@ class _BookFormState extends State<BookForm> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
           child: Card(
-            child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    const Text(
-                      "Formulário do livro",
-                      style: TextStyle(
-                          fontFamily: "Acme",
-                          fontSize: 24,
-                          color: Colors.black),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        cursorColor: Colors.black,
-                        style: Theme.of(context).textTheme.headline3,
-                        controller: _titleController,
-                        decoration: InputDecoration(
-                          labelText: "Título do livro",
-                          hintText: "Insira o título do livro",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Insira um título";
-                          } else {
-                            return null;
-                          }
-                        },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Formulário do livro",
+                        style: TextStyle(
+                            fontFamily: "Acme",
+                            fontSize: 24,
+                            color: Colors.black),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        cursorColor: Colors.black,
-                        style: Theme.of(context).textTheme.headline3,
-                        controller: _editionController,
-                        decoration: InputDecoration(
-                          labelText: "Edição do livro",
-                          hintText: "Insira a edição do livro",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Insira a edição do livro";
-                          } else {
-                            return null;
-                          }
-                        },
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        cursorColor: Colors.black,
-                        style: Theme.of(context).textTheme.headline3,
-                        controller: _isbnController,
-                        decoration: InputDecoration(
-                          labelText: "Isbn do livro",
-                          hintText: "Insira o isbn do livro",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          cursorColor: Colors.black,
+                          style: Theme.of(context).textTheme.headline3,
+                          controller: _titleController,
+                          decoration: InputDecoration(
+                            labelText: "Título do livro",
+                            hintText: "Insira o título do livro",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                           ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Insira um título";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Insira o isbn do livro";
-                          } else {
-                            return null;
-                          }
-                        },
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        cursorColor: Colors.black,
-                        style: Theme.of(context).textTheme.headline3,
-                        controller: _numberOfPagesController,
-                        decoration: InputDecoration(
-                          labelText: "Número de páginas",
-                          hintText: "Insira o número de páginas",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          cursorColor: Colors.black,
+                          style: Theme.of(context).textTheme.headline3,
+                          controller: _editionController,
+                          decoration: InputDecoration(
+                            labelText: "Edição do livro",
+                            hintText: "Insira a edição do livro",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
                           ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Insira a edição do livro";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Insira o número de páginas";
-                          } else {
-                            return null;
-                          }
-                        },
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Divider(
-                      color: Colors.black,
-                      thickness: 2,
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          "Selecione a data de publicação: ",
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          cursorColor: Colors.black,
+                          style: Theme.of(context).textTheme.headline3,
+                          controller: _isbnController,
+                          decoration: InputDecoration(
+                            labelText: "Isbn do livro",
+                            hintText: "Insira o isbn do livro",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Insira o isbn do livro";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
-                        Text(
-                          DateFormat("dd/MM/yyyy")
-                              .format(_publicationDate ?? DateTime.now()),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        height: 50,
+                        child: TextFormField(
+                          cursorColor: Colors.black,
+                          style: Theme.of(context).textTheme.headline3,
+                          controller: _numberOfPagesController,
+                          decoration: InputDecoration(
+                            labelText: "Número de páginas",
+                            hintText: "Insira o número de páginas",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Insira o número de páginas";
+                            } else {
+                              return null;
+                            }
+                          },
                         ),
-                        IconButton(
-                            onPressed: () => showDatePicker(
-                                  context: context,
-                                  keyboardType: TextInputType.datetime,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1850, 1, 1),
-                                  lastDate: DateTime(2050, 12, 31),
-                                  builder: (context, child) => Theme(
-                                      data: ThemeData().copyWith(
-                                          colorScheme: const ColorScheme.light(
-                                              primary: Colors.blue,
-                                              surface: Colors.black)),
-                                      child: child!),
-                                ).then((selectedDate) {
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                        thickness: 2,
+                      ),
+                      Row(
+                        children: [
+                          const Text(
+                            "Selecione a data de publicação: ",
+                            style: TextStyle(fontSize: 16, color: Colors.black),
+                          ),
+                          Text(
+                            DateFormat("dd/MM/yyyy")
+                                .format(_publicationDate ?? DateTime.now()),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 14),
+                          ),
+                          IconButton(
+                              onPressed: () => showDatePicker(
+                                    context: context,
+                                    keyboardType: TextInputType.datetime,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1850, 1, 1),
+                                    lastDate: DateTime(2050, 12, 31),
+                                    builder: (context, child) => Theme(
+                                        data: ThemeData().copyWith(
+                                            colorScheme:
+                                                const ColorScheme.light(
+                                                    primary: Colors.blue,
+                                                    surface: Colors.black)),
+                                        child: child!),
+                                  ).then((selectedDate) {
+                                    setState(() {
+                                      _publicationDate = selectedDate;
+                                    });
+                                  }),
+                              icon: const Icon(Icons.date_range)),
+                        ],
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                        thickness: 2,
+                      ),
+                      const Text(
+                        "Autores",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Acme",
+                            fontSize: 18),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 10),
+                        height: 120,
+                        child: Card(
+                          child: ListView.builder(
+                            itemCount: authorsProvider.authors.length,
+                            itemBuilder: ((context, index) => ListTile(
+                                selected: _authorsList.any((author) =>
+                                    author.id ==
+                                    authorsProvider.authors[index].id),
+                                selectedTileColor: Colors.blue,
+                                dense: true,
+                                title: Text(
+                                  authorsProvider.authors[index].name,
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 14),
+                                ),
+                                onTap: () {
+                                  final selectedAuthor =
+                                      authorsProvider.authors[index];
                                   setState(() {
-                                    _publicationDate = selectedDate;
+                                    if (_authorsList.any((author) =>
+                                        author.id == selectedAuthor.id)) {
+                                      _authorsList.removeWhere((author) =>
+                                          selectedAuthor.id == author.id);
+                                    } else {
+                                      _authorsList.add(selectedAuthor);
+                                    }
                                   });
-                                }),
-                            icon: const Icon(Icons.date_range)),
-                      ],
-                    ),
-                    const Divider(
-                      color: Colors.black,
-                      thickness: 2,
-                    ),
-                    const Text(
-                      "Autores",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Acme",
-                          fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 10),
-                      height: 120,
-                      child: Card(
-                        child: ListView.builder(
-                          itemCount: authorsProvider.authors.length,
-                          itemBuilder: ((context, index) => ListTile(
-                              selected: _authorsList.any((author) =>
-                                  author.id ==
-                                  authorsProvider.authors[index].id),
-                              selectedTileColor: Colors.blue,
-                              dense: true,
-                              title: Text(
-                                authorsProvider.authors[index].name,
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 14),
-                              ),
-                              onTap: () {
-                                final selectedAuthor =
-                                    authorsProvider.authors[index];
-                                setState(() {
-                                  if (_authorsList.any((author) =>
-                                      author.id == selectedAuthor.id)) {
-                                    _authorsList.removeWhere((author) =>
-                                        selectedAuthor.id == author.id);
-                                  } else {
-                                    _authorsList.add(selectedAuthor);
-                                  }
-                                });
-                              })),
+                                })),
+                          ),
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Divider(
-                      color: Colors.black,
-                      thickness: 2,
-                    ),
-                    const Text(
-                      "Editoras",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Acme",
-                          fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      height: 120,
-                      child: Card(
-                        child: ListView.builder(
-                          itemCount: publishersProvider.publishers.length,
-                          itemBuilder: ((context, index) => ListTile(
-                              selected: _selectedPublisher != null
-                                  ? _selectedPublisher!.id ==
-                                      publishersProvider.publishers[index].id
-                                  : false,
-                              title: Text(
-                                publishersProvider.publishers[index].name,
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 14),
-                              ),
-                              selectedTileColor: Colors.blue,
-                              onTap: () {
-                                setState(() {
-                                  if (_selectedPublisher !=
-                                      publishersProvider.publishers[index]) {
-                                    _selectedPublisher =
-                                        publishersProvider.publishers[index];
-                                  } else {
-                                    _selectedPublisher = null;
-                                  }
-                                });
-                              })),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                        thickness: 2,
+                      ),
+                      const Text(
+                        "Editoras",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Acme",
+                            fontSize: 18),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                        height: 120,
+                        child: Card(
+                          child: ListView.builder(
+                            itemCount: publishersProvider.publishers.length,
+                            itemBuilder: ((context, index) => ListTile(
+                                selected: _selectedPublisher != null
+                                    ? _selectedPublisher!.id ==
+                                        publishersProvider.publishers[index].id
+                                    : false,
+                                title: Text(
+                                  publishersProvider.publishers[index].name,
+                                  style: const TextStyle(
+                                      color: Colors.black, fontSize: 14),
+                                ),
+                                selectedTileColor: Colors.blue,
+                                onTap: () {
+                                  setState(() {
+                                    if (_selectedPublisher !=
+                                        publishersProvider.publishers[index]) {
+                                      _selectedPublisher =
+                                          publishersProvider.publishers[index];
+                                    } else {
+                                      _selectedPublisher = null;
+                                    }
+                                  });
+                                })),
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                )),
+                    ],
+                  )),
+            ),
           ),
         ),
       ),
