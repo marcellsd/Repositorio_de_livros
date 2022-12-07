@@ -40,6 +40,12 @@ class PublishersProvider extends ChangeNotifier {
   }
 
   Future<void> savePublisher(Publisher publisher) async {
+    final prefs = await SharedPreferences.getInstance();
+    final user = prefs.getString("user");
+    if (user != null) {
+      final userData = jsonDecode(user);
+      _token = userData["token"];
+    }
     final response = await http.post(Uri.parse(baseUrl),
         headers: {
           'Content-Type': 'application/json',
@@ -54,6 +60,32 @@ class PublishersProvider extends ChangeNotifier {
       _publishers.add(publisher);
       notifyListeners();
     }
+  }
+
+  Future<bool> updatePublisher(Publisher publisher) async {
+    final prefs = await SharedPreferences.getInstance();
+    final user = prefs.getString("user");
+    if (user != null) {
+      final userData = jsonDecode(user);
+      _token = userData["token"];
+    }
+
+    final response = await http.patch(Uri.parse("$baseUrl/${publisher.id}"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: jsonEncode(publisher.toJson()));
+
+    if (response.statusCode == 200) {
+      _publishers
+          .removeWhere((oldPublisher) => oldPublisher.id == publisher.id);
+      _publishers.add(publisher);
+      notifyListeners();
+      return true;
+    }
+    return false;
   }
 
   Future<void> removePublisher(String id) async {

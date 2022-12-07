@@ -56,13 +56,28 @@ class MyApp extends StatelessWidget {
         "/auth-screen": (context) => AuthScreen(),
         "/authors-list-screen": (context) => const AuthorsListScreen(),
         "/author-menu-screen": (context) => const AuthorMenuScreen(),
-        "/author-form-screen": (context) => AuthorForm(),
         "/book-menu-screen": (context) => const BookMenuScreen(),
         "/books-list-screen": (context) => const BooksListScreen(),
-        "/book-form-screen": (context) => const BookForm(),
         "/publisher-menu-screen": (context) => const PublisherMenuScreen(),
         "/publishers-list-screen": (context) => const PublishersListScreen(),
-        "/publisher-form-screen": (context) => const PublisherForm()
+      },
+      onGenerateRoute: (RouteSettings settings) {
+        final String routeName = settings.name ?? '';
+
+        switch (routeName) {
+          case '/book-form-screen':
+            return MaterialPageRoute<bool>(
+              builder: (BuildContext context) => const BookForm(),
+              settings: settings,
+            );
+          case '/author-form-screen':
+            return MaterialPageRoute<bool>(
+                builder: (context) => AuthorForm(), settings: settings);
+          case '/publisher-form-screen':
+            return MaterialPageRoute<bool>(
+                builder: (context) => const PublisherForm(),
+                settings: settings);
+        }
       },
     );
   }

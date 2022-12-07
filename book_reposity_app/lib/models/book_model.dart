@@ -19,7 +19,7 @@ class Book {
       required this.publicationDate,
       required this.isbn,
       required this.authors,
-      this.publisher});
+      required this.publisher});
 
   factory Book.fromJson(Map json) {
     List<Author> authorsList = [];

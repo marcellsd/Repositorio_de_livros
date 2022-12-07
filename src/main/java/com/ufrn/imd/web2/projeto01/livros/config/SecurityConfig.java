@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.ufrn.imd.web2.projeto01.livros.security.JwtAuthFilter;
@@ -34,8 +35,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
+        http.cors().and().csrf().disable()
             .authorizeHttpRequests((authz) -> {
                 try {
                     authz
@@ -69,10 +69,15 @@ public class SecurityConfig {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }   
-            );
+
+            });
+             
         return http.build();
+<<<<<<< HEAD
     }
 
+=======
+    } 
+>>>>>>> e7eeeb1e6cf8e404a5f64d30154ad7f2b1a14243
 }
 

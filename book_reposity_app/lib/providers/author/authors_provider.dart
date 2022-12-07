@@ -43,7 +43,7 @@ class AuthorsProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveAuthor(Author author) async {
+  Future<bool> saveAuthor(Author author) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
     if (user != null) {
@@ -75,10 +75,12 @@ class AuthorsProvider extends ChangeNotifier {
       author.id = data["id"].toString();
       _authors.add(author);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
-  Future<void> updateAuthor(Author author) async {
+  Future<bool> updateAuthor(Author author) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
 
@@ -93,7 +95,8 @@ class AuthorsProvider extends ChangeNotifier {
         bookIds.add(int.parse(book.id));
       }
     }
-    final response = await http.patch(Uri.parse("$baseUrl/${author.id})"),
+
+    final response = await http.patch(Uri.parse("$baseUrl/${author.id}"),
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -105,10 +108,13 @@ class AuthorsProvider extends ChangeNotifier {
       _authors.removeWhere((oldAuthor) => oldAuthor.id == author.id);
       _authors.add(author);
       notifyListeners();
+      return true;
     }
+
+    return false;
   }
 
-  Future<void> removeAuthor(String id) async {
+  Future<bool> removeAuthor(String id) async {
     final response = await http.delete(Uri.parse("$baseUrl/$id"), headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -118,6 +124,8 @@ class AuthorsProvider extends ChangeNotifier {
     if (response.statusCode == 204) {
       _authors.removeWhere((author) => author.id == id);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 }
