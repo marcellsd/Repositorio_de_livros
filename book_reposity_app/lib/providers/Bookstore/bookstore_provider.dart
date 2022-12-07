@@ -39,7 +39,7 @@ class BookstoresProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> saveBookstore(Bookstore bookstore) async {
+  Future<bool> saveBookstore(Bookstore bookstore) async {
     final prefs = await SharedPreferences.getInstance();
     final user = prefs.getString("user");
     if (user != null) {
@@ -59,7 +59,9 @@ class BookstoresProvider extends ChangeNotifier {
       bookstore.id = bookstoreData["id"].toString();
       _bookstores.add(bookstore);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 
   Future<bool> updateBookstore(Bookstore bookstore) async {
@@ -88,7 +90,7 @@ class BookstoresProvider extends ChangeNotifier {
     return false;
   }
 
-  Future<void> removeBookstore(String id) async {
+  Future<bool> removeBookstore(String id) async {
     final response = await http.delete(
       Uri.parse("$baseUrl/$id"),
       headers: {
@@ -101,6 +103,8 @@ class BookstoresProvider extends ChangeNotifier {
     if (response.statusCode == 204) {
       _bookstores.removeWhere((bookstore) => bookstore.id == id);
       notifyListeners();
+      return true;
     }
+    return false;
   }
 }

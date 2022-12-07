@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/author/authors_provider.dart';
 import '../providers/book/books_provider.dart';
+import '../providers/bookstore/bookstore_provider.dart';
 import '../providers/publisher/publishers_provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ]).then((_) {
       Provider.of<AuthorsProvider>(context, listen: false).getAuthors();
       Provider.of<PublishersProvider>(context, listen: false).getPublishers();
+      Provider.of<BookstoresProvider>(context, listen: false).getBookstores();
       Provider.of<BooksProvider>(context, listen: false).getBooks().then((_) {
         setState(() {
           _isLoading = false;
@@ -123,6 +125,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: 10,
                       ),
                       InkWell(
+                        onTap: () => Navigator.of(context)
+                            .pushNamed("/bookstore-menu-screen"),
                         child: Container(
                           alignment: Alignment.center,
                           height: 160,

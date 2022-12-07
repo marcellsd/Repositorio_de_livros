@@ -1,7 +1,8 @@
-import 'package:book_reposity_app/providers/publisher/publishers_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'providers/publisher/publishers_provider.dart';
+import 'providers/bookstore/bookstore_provider.dart';
 import 'views/book/book_form.dart';
 import 'providers/book/books_provider.dart';
 import 'views/author/author_form.dart';
@@ -9,6 +10,9 @@ import 'views/author/author_menu_screen.dart';
 import 'views/author/authors_list_screen.dart';
 import 'views/book/book_menu_screen.dart';
 import 'views/book/books_list_screen.dart';
+import 'views/bookstore/bookstore_form.dart';
+import 'views/bookstore/bookstores_list_screen.dart';
+import 'views/bookstore/bookstore_menu_screen.dart';
 import 'views/publisher/publisher_form.dart';
 import 'views/publisher/publisher_menu_screen.dart';
 import 'views/publisher/publishers_list_screen.dart';
@@ -26,7 +30,8 @@ void main() {
         ChangeNotifierProvider(create: (context) => AuthProvider()),
         ChangeNotifierProvider(create: (context) => AuthorsProvider()),
         ChangeNotifierProvider(create: (context) => BooksProvider()),
-        ChangeNotifierProvider(create: (context) => PublishersProvider())
+        ChangeNotifierProvider(create: (context) => PublishersProvider()),
+        ChangeNotifierProvider(create: (context) => BookstoresProvider())
       ],
       child: MyApp(),
     ),
@@ -60,6 +65,8 @@ class MyApp extends StatelessWidget {
         "/books-list-screen": (context) => const BooksListScreen(),
         "/publisher-menu-screen": (context) => const PublisherMenuScreen(),
         "/publishers-list-screen": (context) => const PublishersListScreen(),
+        "/bookstore-menu-screen": (context) => const BookstoreMenuScreen(),
+        "/bookstores-list-screen": (context) => const BookstoresListScreen()
       },
       onGenerateRoute: (RouteSettings settings) {
         final String routeName = settings.name ?? '';
@@ -76,6 +83,10 @@ class MyApp extends StatelessWidget {
           case '/publisher-form-screen':
             return MaterialPageRoute<bool>(
                 builder: (context) => const PublisherForm(),
+                settings: settings);
+          case '/bookstore-form-screen':
+            return MaterialPageRoute<bool>(
+                builder: (context) => const BookstoreForm(),
                 settings: settings);
         }
       },

@@ -179,6 +179,7 @@ class _BookFormState extends State<BookForm> {
                         child: TextFormField(
                           cursorColor: Colors.black,
                           style: Theme.of(context).textTheme.headline3,
+                          keyboardType: TextInputType.number,
                           controller: _editionController,
                           decoration: InputDecoration(
                             labelText: "Edição do livro",
@@ -204,6 +205,7 @@ class _BookFormState extends State<BookForm> {
                         child: TextFormField(
                           cursorColor: Colors.black,
                           style: Theme.of(context).textTheme.headline3,
+                          keyboardType: TextInputType.number,
                           controller: _isbnController,
                           decoration: InputDecoration(
                             labelText: "Isbn do livro",
@@ -229,6 +231,7 @@ class _BookFormState extends State<BookForm> {
                         child: TextFormField(
                           cursorColor: Colors.black,
                           style: Theme.of(context).textTheme.headline3,
+                          keyboardType: TextInputType.number,
                           controller: _numberOfPagesController,
                           decoration: InputDecoration(
                             labelText: "Número de páginas",
