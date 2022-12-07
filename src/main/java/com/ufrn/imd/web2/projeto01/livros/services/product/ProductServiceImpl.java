@@ -73,7 +73,8 @@ public class ProductServiceImpl implements ProductService {
         product.setQuantity(productDTO.getQuantity());
         productRepository.save(product);
         
-        return InfoProductDTO.builder().book(bookToBookDTO(book))
+        return InfoProductDTO.builder().id(product.getId())
+                                       .book(bookToBookDTO(book))
                                        .quantity(product.getQuantity())
                                        .price(product.getPrice())
                                        .build();
@@ -140,6 +141,7 @@ public class ProductServiceImpl implements ProductService {
         InfoBookDTO booksDTO = bookToBookDTO(product.getBook());
 
         InfoProductDTO productDTO = InfoProductDTO.builder()
+                                  .id(product.getId())
                                   .price(product.getPrice())
                                   .quantity(product.getQuantity())
                                   .book(booksDTO).build();
@@ -155,6 +157,7 @@ public class ProductServiceImpl implements ProductService {
         for (Product product : products) {
             InfoBookDTO booksDTO = bookToBookDTO(product.getBook());
             InfoProductDTO ProductDTO = InfoProductDTO.builder()
+                                        .id(product.getId())
                                         .price(product.getPrice())
                                         .quantity(product.getQuantity())
                                         .book(booksDTO).build();
