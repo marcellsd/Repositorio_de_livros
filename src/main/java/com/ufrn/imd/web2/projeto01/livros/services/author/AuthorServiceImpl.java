@@ -28,17 +28,17 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     AuthorRepository authorRepository;
 
-    
+    @Autowired
     BookService bookService;
-
-    public BookService getBookService() {
-        return bookService;
-    }
+    
+    // public BookService getBookService() {
+    //     return bookService;
+    // }
 
     
-    public void setBookService(BookService bookService) {
-        this.bookService = bookService;
-    }
+    // public void setBookService(BookService bookService) {
+    //     this.bookService = bookService;
+    // }
     
 
     @Autowired

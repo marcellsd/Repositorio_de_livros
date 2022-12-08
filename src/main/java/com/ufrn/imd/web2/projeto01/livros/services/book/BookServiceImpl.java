@@ -19,6 +19,7 @@ import com.ufrn.imd.web2.projeto01.livros.models.Author;
 import com.ufrn.imd.web2.projeto01.livros.models.Book;
 import com.ufrn.imd.web2.projeto01.livros.models.Publisher;
 import com.ufrn.imd.web2.projeto01.livros.models.RepoUser;
+import com.ufrn.imd.web2.projeto01.livros.repositories.AuthorRepository;
 import com.ufrn.imd.web2.projeto01.livros.repositories.BookRepository;
 import com.ufrn.imd.web2.projeto01.livros.repositories.RepoUserRepository;
 import com.ufrn.imd.web2.projeto01.livros.services.author.AuthorService;
@@ -38,8 +39,7 @@ public class BookServiceImpl implements BookService{
     RepoUserRepository repoUserRepository;
 
     @Autowired
-    @Qualifier("authorServiceImpl")
-    AuthorService authorService;
+    AuthorRepository authorRepository;
     
     
     @Override
@@ -71,7 +71,7 @@ public class BookServiceImpl implements BookService{
         book.setPublisher(publisherService.getPublisherById(bookDTO.getPublisherId()));
         List<Author> authors = new ArrayList<Author>();
         for (Integer authorId : bookDTO.getAuthorsId()) {
-            Author author = authorService.getAuthorById(authorId);
+            Author author = authorRepository.findById(authorId).orElseThrow();
             authors.add(author);
         }
         book.setAuthors(authors);
@@ -116,7 +116,7 @@ public class BookServiceImpl implements BookService{
         else{
             List<Author> authors = new ArrayList<Author>();
             for (Integer authorId : updatedBookDTO.getAuthorsId()) {
-                Author author = authorService.getAuthorById(authorId);
+                Author author = authorRepository.findById(authorId).orElseThrow();
                 if (author != null) {
                     authors.add(author);
                 }

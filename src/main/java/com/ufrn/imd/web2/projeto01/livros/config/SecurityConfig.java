@@ -50,7 +50,7 @@ public class SecurityConfig {
                 try {
                     Boolean isDev = Boolean.parseBoolean(env.getProperty("security.jwt.dev-mod"));
                     if(isDev){
-                        authz.antMatchers(HttpMethod.POST, "/api/user/**")
+                        authz.antMatchers("/**") 
                         .permitAll()
                         .anyRequest().authenticated()  
                         .and().sessionManagement()
