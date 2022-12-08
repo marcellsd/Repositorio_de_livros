@@ -5,10 +5,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/product.dart';
+import '../../utils/environment.dart';
 
 class ProductsProvider extends ChangeNotifier {
   final List<Product> _products = [];
-  final baseUrl = "http://10.0.2.2:8080/api/product";
+  final baseUrl = "${Environment().config.apiUrl}/product";
 
   String? _token;
 

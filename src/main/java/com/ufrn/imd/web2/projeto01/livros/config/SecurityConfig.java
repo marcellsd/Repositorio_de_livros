@@ -1,8 +1,12 @@
 package com.ufrn.imd.web2.projeto01.livros.config;
 
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ufrn.imd.web2.projeto01.livros.security.JwtAuthFilter;
 import com.ufrn.imd.web2.projeto01.livros.security.JwtService;
 import com.ufrn.imd.web2.projeto01.livros.services.user.RepoUserServiceImpl;
+
 
 @EnableWebSecurity //configuracao de segurança
 public class SecurityConfig {
@@ -32,13 +37,29 @@ public class SecurityConfig {
         return new JwtAuthFilter(jwtService, usuarioService);
     }
 
+    @Autowired 
+    private Environment env;
 
+    // @Value("${security.jwt.dev-mode}") //injetando propriedades do applications.properties
+    // private String devMode;
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
             .authorizeHttpRequests((authz) -> {
                 try {
-                    authz
+                    Boolean isDev = Boolean.parseBoolean(env.getProperty("security.jwt.dev-mod"));
+                    if(isDev){
+                        authz.antMatchers("/**") 
+                        .permitAll()
+                        .anyRequest().authenticated()  
+                        .and().sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //sessões sem usuários - TODA REQUISICAO PRECISA DO TOKEN
+                    .and() //volta a raiz
+                        .addFilterBefore( jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                    }
+                    else{
+                        authz
                         .antMatchers(HttpMethod.GET,"/api/book/**", "/api/publisher/**", "/api/author/**", 
                                                     "/api/address/**","/api/product/**","/api/bookstore/**") 
                             .hasAnyRole("USER","PUBLISHER","AUTHOR", "BOOKSTORE")
@@ -68,6 +89,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //sessões sem usuários - TODA REQUISICAO PRECISA DO TOKEN
                     .and() //volta a raiz
                         .addFilterBefore( jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+                    }
+                    
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
