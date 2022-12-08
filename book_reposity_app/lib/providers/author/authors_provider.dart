@@ -4,11 +4,12 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/author.dart';
+import '../../utils/environment.dart';
 
 class AuthorsProvider extends ChangeNotifier {
   final List<Author> _authors = [];
 
-  final baseUrl = "http://10.0.2.2:8080/api/author";
+  final baseUrl = "${Environment().config.apiUrl}/author";
 
   List<Author> get authors => _authors;
 

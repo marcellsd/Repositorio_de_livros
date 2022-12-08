@@ -5,10 +5,11 @@ import "package:http/http.dart" as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/publisher.dart';
+import '../../utils/environment.dart';
 
 class PublishersProvider extends ChangeNotifier {
   final List<Publisher> _publishers = [];
-  String baseUrl = "http://10.0.2.2:8080/api/publisher";
+  String baseUrl = "${Environment().config.apiUrl}/publisher";
 
   String? _token;
 
