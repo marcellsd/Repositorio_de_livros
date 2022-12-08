@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'providers/publisher/publishers_provider.dart';
 import 'providers/bookstore/bookstore_provider.dart';
+import 'utils/environment.dart';
 import 'views/book/book_form.dart';
 import 'providers/book/books_provider.dart';
 import 'views/author/author_form.dart';
@@ -24,6 +25,12 @@ import 'views/home_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  const String environment = String.fromEnvironment(
+    'ENVIRONMENT',
+    defaultValue: Environment.DEV,
+  );
+
+  Environment().initConfig(environment);
   runApp(
     MultiProvider(
       providers: [
